@@ -1,0 +1,7 @@
+{% extends 'authentication/base.html' %}
+{% block title %}Email Verification Sent{% endblock %}
+
+{% block content %}
+<h2>Email Verification Sent</h2>
+<p>An email has been sent to {{ user.email }}. Please check your inbox and follow the instructions to verify your account.</p>
+{% endblock %}
