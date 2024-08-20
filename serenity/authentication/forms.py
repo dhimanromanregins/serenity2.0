@@ -6,18 +6,25 @@ from .models import CustomUser
 class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
     phone_number = forms.CharField(max_length=15, required=True)
+    username = forms.CharField(max_length=30, required=True)
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput)
 
     class Meta:
         model = CustomUser
-        fields = ('email', 'phone_number', 'password1', 'password2')
+        fields = ('username','email', 'phone_number', 'password1', 'password2')
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if CustomUser.objects.filter(email=email).exists():
             raise forms.ValidationError("Email is already in use.")
         return email
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if CustomUser.objects.filter(username=username).exists():
+            raise forms.ValidationError("Username is already taken.")
+        return username
 
     def clean_phone_number(self):
         phone_number = self.cleaned_data.get('phone_number')

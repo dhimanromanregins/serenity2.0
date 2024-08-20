@@ -11,6 +11,7 @@ class CustomUserAdmin(BaseUserAdmin):
     search_fields = ('email', 'phone_number', 'first_name', 'last_name')
     ordering = ('email',)
     filter_horizontal = ()
+    readonly_fields = ('date_joined',)
 
     # Define the forms to be used in the admin interface
     add_fieldsets = (

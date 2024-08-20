@@ -2,7 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Book, Genre
 from .forms import BookForm
 from django.views.generic import ListView, DetailView
-from django.db.models import Q
+from audiobooks.models import Audiobook
+from django.db.models import Q, Exists, OuterRef
 
 
 class BookListView(ListView):
@@ -13,25 +14,38 @@ class BookListView(ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
 
-        # Get search query and selected genre from request
+        # Get search query, selected genre, and audiobook filter from request
         search_query = self.request.GET.get('q', '')
         selected_genre = self.request.GET.get('genre', '')
+        has_audiobook = self.request.GET.get('has_audiobook', False)
 
-        # Apply search filter to text fields only
+        # Apply search filter
         if search_query:
             search_filter = (
                 Q(title__icontains=search_query) |
-                Q(author__icontains=search_query) |
+                Q(author__name__icontains=search_query) |
                 Q(isbn__icontains=search_query) |
-                Q(summary__icontains=search_query)  # Include other text fields if needed
+                Q(summary__text__icontains=search_query)
             )
             queryset = queryset.filter(search_filter)
 
-        # Apply genre filter using ForeignKey relationship
+        # Apply genre filter
         if selected_genre:
             queryset = queryset.filter(genre__id=selected_genre)
 
+        # Apply audiobook filter
+        if has_audiobook:
+            queryset = queryset.filter(Exists(Audiobook.objects.filter(book=OuterRef('pk'))))
+
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['genres'] = Genre.objects.all()
+        context['search_query'] = self.request.GET.get('q', '')
+        context['selected_genre'] = self.request.GET.get('genre', '')
+        context['has_audiobook'] = self.request.GET.get('has_audiobook', False)
+        return context
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -42,6 +56,7 @@ class BookListView(ListView):
         context['selected_genre'] = self.request.GET.get('genre', '')
         return context
 
+
 class BookDetailView(DetailView):
     model = Book
     template_name = 'books/book_detail.html'
@@ -49,7 +64,28 @@ class BookDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        # Fetch all reviews related to the book that are moderated
         context['reviews'] = self.object.reviews.filter(is_moderated=True)
+
+        # Get all audiobooks related to this book
+        audiobooks = self.object.audiobooks.all()
+        context['audiobooks'] = audiobooks
+
+        # Extract unique narrators from the audiobooks
+        narrators = audiobooks.values_list('narrator', flat=True).distinct()
+        context['narrators'] = narrators
+
+        # Get selected narrator from the request (if any)
+        selected_narrator = self.request.GET.get('narrator')
+        context['selected_narrator'] = selected_narrator
+
+        # Filter audiobooks by selected narrator if any narrator is selected
+        if selected_narrator:
+            context['filtered_audiobooks'] = audiobooks.filter(narrator=selected_narrator)
+        else:
+            context['filtered_audiobooks'] = audiobooks
+
         return context
 
 

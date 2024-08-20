@@ -36,7 +36,6 @@ def moderate_review(request, review_id):
 def book_detail(request, pk):
     book = get_object_or_404(Book, pk=pk)
     reviews = book.reviews.filter(is_moderated=True).order_by('-created_at')
-    print(reviews, '==================')
     return render(request, 'books/book_detail.html', {'book': book, 'reviews': reviews})
 
 

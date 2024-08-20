@@ -30,6 +30,17 @@
         </div>
     </form>
 
+
+    <!-- Audiobook Filter -->
+    <form method="get" class="audiobook-form">
+    <div class="form-group">
+        <label>
+            <input type="checkbox" name="has_audiobook" {% if has_audiobook %}checked{% endif %}> Show only books with audiobooks
+        </label>
+    </div>
+    <button type="submit" class="btn btn-primary">Apply Filter</button>
+</form>
+
     <h2>Results</h2>
     {% if books %}
         <ul class="book-list">

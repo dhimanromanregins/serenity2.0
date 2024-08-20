@@ -37,6 +37,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     Custom User model where email is the unique identifier instead of usernames.
     """
     email = models.EmailField(_('email address'), unique=True)
+    username = models.CharField(_('username'), max_length=30, unique=True, blank=True, null=True)
     phone_number = models.CharField(_('phone number'), max_length=15, unique=True)
     first_name = models.CharField(_('first name'), max_length=30, blank=True, null=True)
     last_name = models.CharField(_('last name'), max_length=30, blank=True, null=True)

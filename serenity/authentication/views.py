@@ -24,9 +24,10 @@ from django.contrib import messages
 from .forms import UserProfileForm
 from .models import CustomUser
 from django.urls import reverse_lazy
+from .decorators import redirect_if_authenticated
 
 
-
+@redirect_if_authenticated
 def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
@@ -52,7 +53,7 @@ def register(request):
 
 
 
-
+@redirect_if_authenticated
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
