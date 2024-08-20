@@ -9,4 +9,5 @@ urlpatterns = [
     path('book/delete/<int:pk>/', views.delete_book, name='delete_book'),
     path('book/patch/<int:pk>/', views.patch_book, name='patch_book'),
     path('search/', views.search_books, name='search_books'),  # Add search_books view
+    path('generate_audio/<int:pk>/', views.generate_audio, name='generate_summary_audio'),
 ]

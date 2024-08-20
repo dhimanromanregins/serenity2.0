@@ -32,14 +32,13 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django_elasticsearch_dsl',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_elasticsearch_dsl',
-    'haystack',
     'authentication',
     'books',
     'reviews',
@@ -62,11 +61,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'serenity.urls'
 
 
-ELASTICSEARCH_DSL = {
-     'default': {
-           'hosts': 'http://localhost:9200',
-       },
-}
+
 
 HAYSTACK_CONNECTIONS = {
     'default': {
@@ -107,6 +102,12 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+}
+
+ELASTICSEARCH_DSL = {
+     'default': {
+           'hosts': 'http://localhost:9200',
+       },
 }
 
 

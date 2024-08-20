@@ -6,6 +6,10 @@ from audiobooks.models import Audiobook
 from django.db.models import Q, Exists, OuterRef
 from dashboard.models import ReadingHistory, SavedBook, RecentlyViewed
 from django.utils import timezone
+from .document import BookDocument
+from django_elasticsearch_dsl.search import Search
+from .utils import synthesize_speech
+from django.conf import settings
 
 
 class BookListView(ListView):
@@ -21,15 +25,16 @@ class BookListView(ListView):
         selected_genre = self.request.GET.get('genre', '')
         has_audiobook = self.request.GET.get('has_audiobook', False)
 
-        # Apply search filter
+        # Apply search filter with Elasticsearch
         if search_query:
-            search_filter = (
-                Q(title__icontains=search_query) |
-                Q(author__name__icontains=search_query) |
-                Q(isbn__icontains=search_query) |
-                Q(summary__text__icontains=search_query)
+            s = Search(index='books').query(
+                'multi_match',
+                query=search_query,
+                fields=['title', 'author.name', 'genre.name', 'summary.book_title', 'summary.text', 'isbn']
             )
-            queryset = queryset.filter(search_filter)
+            search_results = s.execute()
+            ids = [hit.meta.id for hit in search_results]
+            queryset = queryset.filter(id__in=ids)
 
         # Apply genre filter
         if selected_genre:
@@ -37,11 +42,11 @@ class BookListView(ListView):
 
         # Apply audiobook filter
         if has_audiobook:
-            queryset = queryset.filter(Exists(Audiobook.objects.filter(book=OuterRef('pk'))))
+            queryset = queryset.filter(audiobook__isnull=False)
 
         return queryset
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **   kwargs):
         context = super().get_context_data(**kwargs)
         context['genres'] = Genre.objects.all()
         context['search_query'] = self.request.GET.get('q', '')
@@ -92,15 +97,17 @@ class BookDetailView(DetailView):
         else:
             context['filtered_audiobooks'] = audiobooks
 
-        if self.request.user.is_authenticated:
-            RecentlyViewed.objects.update_or_create(
-                user=self.request.user,
-                book=self.object,
-                defaults={'viewed_at': timezone.now()}
-            )
+        # Handle voice selection and generate audio
+        selected_voice = self.request.POST.get('voice',
+                                               'en-US-Wavenet-D')  # Default to a specific voice if not selected
+        context['selected_voice'] = selected_voice
+
+        summary_text = self.object.summary.text
+        audio_filename = f"{self.object.id}_summary_{selected_voice}.mp3"
+        audio_file_path = synthesize_speech(summary_text, audio_filename, selected_voice)
+        context['audio_file_url'] = settings.MEDIA_URL + 'text-to-speech/' + audio_filename
 
         return context
-
 
 def add_or_edit_book(request, pk=None):
     if pk:
@@ -172,3 +179,13 @@ def search_books(request):
         'selected_genre': genre_id,
         'search_query': query
     })
+
+
+def generate_audio(request, pk):
+    book = Book.objects.get(pk=pk)
+    if request.method == 'POST':
+        selected_voice = request.POST.get('voice', 'en-US-Wavenet-D')
+        summary_text = book.summary.text
+        audio_filename = f"{book.id}_summary_{selected_voice}.mp3"
+        synthesize_speech(summary_text, audio_filename, selected_voice)
+    return redirect('book_detail', pk=pk)

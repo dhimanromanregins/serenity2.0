@@ -13,11 +13,49 @@
         {% if book.image %}
             <img src="{{ book.image.url }}" alt="{{ book.title }}" class="book-image">
         {% endif %}
-        <p><strong>Author:</strong> {{ book.author }}</p>
+        <p><strong>Author:</strong> {{ book.author.name }}</p>
+        <p><strong>Author Bio:</strong> {{ book.author.bio }}</p>
         <p><strong>Genre:</strong> {{ book.genre.name }}</p>
         <p><strong>Published Date:</strong> {{ book.published_date }}</p>
         <p><strong>ISBN:</strong> {{ book.isbn }}</p>
-        <p><strong>Summary:</strong> {{ book.summary }}</p>
+        <p><strong>Summary Title:</strong> {{ book.summary.book_title }}</p>
+        <p><strong>Summary:</strong> {{ book.summary.text }}</p>
+
+<!--        <form method="post" action="{% url 'generate_summary_audio' book.id %}">-->
+<!--            {% csrf_token %}-->
+<!--            <label for="voice">Select Voice:</label>-->
+<!--            <select name="voice" id="voice">-->
+<!--                <option value="en-US-Wavenet-A" {% if selected_voice == 'en-US-Wavenet-A' %}selected{% endif %}>English (US) - Wavenet A</option>-->
+<!--                <option value="en-US-Wavenet-B" {% if selected_voice == 'en-US-Wavenet-B' %}selected{% endif %}>English (US) - Wavenet B</option>-->
+<!--                <option value="en-US-Wavenet-C" {% if selected_voice == 'en-US-Wavenet-C' %}selected{% endif %}>English (US) - Wavenet C</option>-->
+<!--                <option value="en-US-Wavenet-D" {% if selected_voice == 'en-US-Wavenet-D' %}selected{% endif %}>English (US) - Wavenet D</option>-->
+<!--                <option value="en-US-Wavenet-E" {% if selected_voice == 'en-US-Wavenet-E' %}selected{% endif %}>English (US) - Wavenet E</option>-->
+<!--                <option value="en-US-Wavenet-F" {% if selected_voice == 'en-US-Wavenet-F' %}selected{% endif %}>English (US) - Wavenet F</option>-->
+<!--                <option value="en-US-Standard-A" {% if selected_voice == 'en-US-Standard-A' %}selected{% endif %}>English (US) - Standard A</option>-->
+<!--                <option value="en-US-Standard-B" {% if selected_voice == 'en-US-Standard-B' %}selected{% endif %}>English (US) - Standard B</option>-->
+<!--                <option value="en-US-Standard-C" {% if selected_voice == 'en-US-Standard-C' %}selected{% endif %}>English (US) - Standard C</option>-->
+<!--                <option value="en-US-Standard-D" {% if selected_voice == 'en-US-Standard-D' %}selected{% endif %}>English (US) - Standard D</option>-->
+<!--                <option value="en-GB-Wavenet-A" {% if selected_voice == 'en-GB-Wavenet-A' %}selected{% endif %}>English (UK) - Wavenet A</option>-->
+<!--                <option value="en-GB-Wavenet-B" {% if selected_voice == 'en-GB-Wavenet-B' %}selected{% endif %}>English (UK) - Wavenet B</option>-->
+<!--                <option value="en-GB-Wavenet-C" {% if selected_voice == 'en-GB-Wavenet-C' %}selected{% endif %}>English (UK) - Wavenet C</option>-->
+<!--                <option value="en-GB-Wavenet-D" {% if selected_voice == 'en-GB-Wavenet-D' %}selected{% endif %}>English (UK) - Wavenet D</option>-->
+<!--                <option value="en-GB-Standard-A" {% if selected_voice == 'en-GB-Standard-A' %}selected{% endif %}>English (UK) - Standard A</option>-->
+<!--                <option value="en-GB-Standard-B" {% if selected_voice == 'en-GB-Standard-B' %}selected{% endif %}>English (UK) - Standard B</option>-->
+<!--                <option value="en-GB-Standard-C" {% if selected_voice == 'en-GB-Standard-C' %}selected{% endif %}>English (UK) - Standard C</option>-->
+<!--                <option value="en-GB-Standard-D" {% if selected_voice == 'en-GB-Standard-D' %}selected{% endif %}>English (UK) - Standard D</option>-->
+<!--            </select>-->
+<!--            <button type="submit" class="btn btn-primary">Generate Audio</button>-->
+<!--        </form>-->
+
+        {% if audio_file_url %}
+            <h2>Listen to the Summary</h2>
+            <audio controls>
+                <source src="{{ audio_file_url }}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <a href="{{ audio_file_url }}" download="summary.mp3" class="btn btn-primary">Download Summary</a>
+        {% endif %}
+
         <p><strong>Average Rating:</strong> {{ book.average_rating|default:"Not Rated" }} / 5</p>
 
         {% if audiobooks %}
@@ -38,8 +76,6 @@
                     <source src="{{ audiobook.audio_file.url }}" type="audio/mpeg">
                     Your browser does not support the audio element.
                 </audio>
-
-                <!-- Download button for the audiobook -->
                 <a href="{{ audiobook.audio_file.url }}" download="{{ audiobook.book.title }} - {{ audiobook.narrator }}" class="btn btn-primary">Download Audiobook</a>
             {% endfor %}
         {% else %}
