@@ -18,7 +18,7 @@
   <ul>
     {% for book in books %}
       <li>
-        <a href="{% url 'book_detail' book.meta.id %}">{{ book.title }}</a> by {{ book.author }}
+        <a href="{% url 'book_detail' book.id %}">{{ book.title }}</a> by {{ book.author }}
       </li>
     {% empty %}
       <li>No books found.</li>

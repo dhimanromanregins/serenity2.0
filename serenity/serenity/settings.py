@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from elasticsearch_dsl import connections
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,8 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_elasticsearch_dsl',
+    'haystack',
     'authentication',
-    'books'
+    'books',
+    'reviews',
 ]
 
 AUTH_USER_MODEL = 'authentication.CustomUser'
@@ -56,14 +59,20 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'serenity.urls'
 
-from elasticsearch_dsl import connections
 
 ELASTICSEARCH_DSL = {
-    'default': {
-        'hosts': ['http://localhost:9200'],
-    },
+     'default': {
+           'hosts': 'http://localhost:9200',
+       },
 }
 
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'haystack',
+    },
+}
 connections.create_connection(
     alias='default',
     hosts=['http://localhost:9200']
@@ -72,7 +81,7 @@ connections.create_connection(
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'Templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

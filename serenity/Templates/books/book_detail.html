@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ book.title }} - Book Details</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1>{{ book.title }}</h1>
+    <div class="book-detail">
+        {% if book.image %}
+            <img src="{{ book.image.url }}" alt="{{ book.title }}" class="book-image">
+        {% endif %}
+        <p><strong>Author:</strong> {{ book.author }}</p>
+        <p><strong>Genre:</strong> {{ book.genre.name }}</p>
+        <p><strong>Published Date:</strong> {{ book.published_date }}</p>
+        <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+        <p><strong>Summary:</strong> {{ book.summary }}</p>
+        <p><strong>Average Rating:</strong> {{ book.average_rating|default:"Not Rated" }} / 5</p>
+    </div>
+
+    <h2>Reviews</h2>
+    {% if reviews %}
+        <ul class="review-list">
+            {% for review in reviews %}
+                <li class="review-item">
+                    <p><strong>{{ review.user.username }}:</strong> {{ review.rating }} stars</p>
+                    <p>{{ review.comment }}</p>
+                    <p><em>Submitted on {{ review.created_at }}</em></p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No reviews yet.</p>
+    {% endif %}
+
+    <a href="{% url 'submit_review' book.id %}" class="btn btn-primary">Submit a Review</a>
+
+    <a href="{% url 'book_list' %}">Back to Book List</a>
+</body>
+</html>
