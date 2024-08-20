@@ -4,6 +4,8 @@ from .forms import BookForm
 from django.views.generic import ListView, DetailView
 from audiobooks.models import Audiobook
 from django.db.models import Q, Exists, OuterRef
+from dashboard.models import ReadingHistory, SavedBook, RecentlyViewed
+from django.utils import timezone
 
 
 class BookListView(ListView):
@@ -54,6 +56,10 @@ class BookListView(ListView):
         # Pass the current search query and selected genre to the template
         context['search_query'] = self.request.GET.get('q', '')
         context['selected_genre'] = self.request.GET.get('genre', '')
+
+        if self.request.user.is_authenticated:
+            recently_viewed = RecentlyViewed.objects.filter(user=self.request.user).select_related('book')
+            context['recently_viewed'] = recently_viewed
         return context
 
 
@@ -85,6 +91,13 @@ class BookDetailView(DetailView):
             context['filtered_audiobooks'] = audiobooks.filter(narrator=selected_narrator)
         else:
             context['filtered_audiobooks'] = audiobooks
+
+        if self.request.user.is_authenticated:
+            RecentlyViewed.objects.update_or_create(
+                user=self.request.user,
+                book=self.object,
+                defaults={'viewed_at': timezone.now()}
+            )
 
         return context
 

@@ -25,6 +25,7 @@ urlpatterns = [
     path('', include('books.urls')),
     path('', include('reviews.urls')),
     path('', include('audiobooks.urls')),
+    path('', include('dashboard.urls'))
 ]
 
 if settings.DEBUG:

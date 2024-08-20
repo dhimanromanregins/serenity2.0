@@ -30,16 +30,20 @@
         </div>
     </form>
 
-
     <!-- Audiobook Filter -->
     <form method="get" class="audiobook-form">
-    <div class="form-group">
-        <label>
-            <input type="checkbox" name="has_audiobook" {% if has_audiobook %}checked{% endif %}> Show only books with audiobooks
-        </label>
+        <div class="form-group">
+            <label>
+                <input type="checkbox" name="has_audiobook" {% if has_audiobook %}checked{% endif %}> Show only books with audiobooks
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primary">Apply Filter</button>
+    </form>
+
+    <!-- Dashboard Link -->
+    <div class="dashboard-link">
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary">Go to Dashboard</a>
     </div>
-    <button type="submit" class="btn btn-primary">Apply Filter</button>
-</form>
 
     <h2>Results</h2>
     {% if books %}
@@ -64,6 +68,61 @@
         </ul>
     {% else %}
         <p>No books found.</p>
+    {% endif %}
+
+    <!-- User Dashboard Section -->
+    {% if user.is_authenticated %}
+        <h2>Your Dashboard</h2>
+
+        <!-- Book Recommendations -->
+        <h3>Current Book Recommendations</h3>
+        {% if recommendations %}
+            <ul>
+                {% for book in recommendations %}
+                    <li><a href="{% url 'book_detail' book.id %}">{{ book.title }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No recommendations available.</p>
+        {% endif %}
+
+        <!-- Saved Books -->
+        <h3>Saved Books</h3>
+        {% if saved_books %}
+            <ul>
+                {% for saved_book in saved_books %}
+                    <li><a href="{% url 'book_detail' saved_book.book.id %}">{{ saved_book.book.title }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No saved books.</p>
+        {% endif %}
+
+        <!-- Reading History -->
+        <h3>Reading History</h3>
+        {% if reading_history %}
+            <ul>
+                {% for history in reading_history %}
+                    <li>{{ history.book.title }} - Read on {{ history.date_read }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No reading history available.</p>
+        {% endif %}
+
+        <!-- Recently Viewed Books -->
+        <h3>Recently Viewed Books</h3>
+        {% if recently_viewed %}
+            <ul>
+                {% for viewed in recently_viewed %}
+                    <li><a href="{% url 'book_detail' viewed.book.id %}">{{ viewed.book.title }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No recently viewed books.</p>
+        {% endif %}
+    {% else %}
+        <p>Please <a href="{% url 'login' %}">login</a> to see your dashboard.</p>
     {% endif %}
 </body>
 </html>
