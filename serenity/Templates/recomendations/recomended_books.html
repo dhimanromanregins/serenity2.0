@@ -1,0 +1,27 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h2>Recommended Books</h2>
+
+  {% if books %}
+    {% for genre in genres %}
+      {% if books|dictsort:"genre.name"|filter:"genre__name" %}
+        <h3>{{ genre.name }}</h3>
+        <ul>
+          {% for book in books %}
+            {% if book.genre.name == genre.name %}
+              <li>
+                <h4>{{ book.title }}</h4>
+                <p><strong>Author:</strong> {{ book.author.name }}</p>
+                <p><strong>Summary:</strong> {{ book.summary.text }}</p>
+                <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endfor %}
+  {% else %}
+    <p>No books found based on your interests and genres.</p>
+  {% endif %}
+{% endblock %}

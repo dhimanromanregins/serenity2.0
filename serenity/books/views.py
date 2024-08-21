@@ -9,10 +9,11 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 # from .document import BookDocument
 from django_elasticsearch_dsl.search import Search
-from .utils import synthesize_speech
+from .utils import synthesize_and_play_speech
 from django.conf import settings
 # from .search import BookDocument
-
+from recomendations.models import UserIntrests
+import re
 
 class BookListView(ListView):
     model = Book
@@ -70,6 +71,12 @@ class BookListView(ListView):
         return context
 
 
+def sanitize_filename(filename):
+    # Replace spaces and special characters with underscores
+    sanitized = re.sub(r'[\/:*?"<>|]', '_', filename)  # Replace invalid characters
+    sanitized = re.sub(r'\s+', '_', sanitized)  # Replace spaces with underscores
+    return sanitized
+
 
 class BookDetailView(DetailView):
     model = Book
@@ -104,19 +111,18 @@ class BookDetailView(DetailView):
             context['is_saved'] = SaveBook.objects.filter(user=self.request.user, book=self.object).exists()
         else:
             context['is_saved'] = False
-        
+
         if self.request.user.is_authenticated:
             RecentlyViewed.objects.get_or_create(user=self.request.user, book=self.object)
 
-        # Handle voice selection and generate audio
-        # selected_voice = self.request.POST.get('voice',
-        #                                        'en-US-Wavenet-D')  # Default to a specific voice if not selected
-        # context['selected_voice'] = selected_voice
+        # Generate audio file for summary
+        summary_text = self.object.summary.text
+        book_title = self.object.title
+        audio_filename = f"{sanitize_filename(book_title)}.mp3"
 
-        # summary_text = self.object.summary.text
-        # audio_filename = f"{self.object.id}_summary_{selected_voice}.mp3"
-        # audio_file_path = synthesize_speech(summary_text, audio_filename, selected_voice)
-        # context['audio_file_url'] = settings.MEDIA_URL + 'text-to-speech/' + audio_filename
+        # Call the synthesize_and_play_speech function
+        audio_file_path = synthesize_and_play_speech(summary_text, audio_filename)
+        context['audio_file_url'] = settings.MEDIA_URL + 'text-to-speech/' + audio_filename
 
         return context
 
@@ -162,11 +168,10 @@ def search_books(request):
     query = request.GET.get('q')
     genre_id = request.GET.get('genre', '')
 
-    print(query, '-------------------------')
-
     books = Book.objects.all()
 
     if query:
+        UserIntrests.objects.create(user=request.user, text=query)
         s = Search(index='books').query(
             'multi_match',
             query=query,
@@ -174,7 +179,6 @@ def search_books(request):
         )
         search_results = s.execute()
         ids = [hit.meta.id for hit in search_results]
-        print('+++++++++++++++++++', ids)
         books = books.filter(id__in=ids)
 
     if genre_id:

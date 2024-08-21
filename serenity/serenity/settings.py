@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'reviews',
     'audiobooks',
     'dashboard',
+    'recomendations',
 ]
 
 AUTH_USER_MODEL = 'authentication.CustomUser'
