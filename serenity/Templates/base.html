@@ -36,10 +36,8 @@
                     <div class="header-info-left d-flex align-items-center">
                       <div class="logo">
                         <a href="/"
-                          ><img src="{% static 'img/logo/logo.png' %}" alt=""
-                        /></a>
+                          >Serenity Shelf</a>
                       </div>
-
                       <form action="/search" class="form-box">
                         <input
                           type="text"
@@ -54,7 +52,14 @@
                     </div>
                     <div class="header-info-right d-flex align-items-center">
                       <ul>
-              
+                        <li>
+                          Welcome,
+                          {% if request.user.is_authenticated %}
+                          {{request.user.username}}
+                          {% else %}
+                          Guest
+                          {% endif %}
+                      </li>
                         <li>
                           {% if request.user.is_authenticated %}
                           <a href="/profile" class="btn header-btn">Profile</a>

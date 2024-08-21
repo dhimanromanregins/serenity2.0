@@ -152,7 +152,7 @@
                     Your browser does not support the audio element.
                 </audio>
 
-                <a href="{{ audiobook.audio_file.url }}" download="{{ audiobook.book.title }} - {{ audiobook.narrator }}" class="btn btn-primary">Download Audiobook</a>
+                <a href="/download/{{audiobook.id}}" download="{{ audiobook.book.title }} - {{ audiobook.narrator }}" class="btn btn-primary">Download Audiobook</a>
             {% endfor %}
         {% else %}
             <p>No audiobooks available.</p>

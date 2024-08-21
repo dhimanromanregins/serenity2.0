@@ -17,16 +17,18 @@
               <a href="/book/{{book.id}}"><img src="{{book.image.url}}" alt=""></a>
               </div>
               <div class="properties-caption properties-caption2">
-              <h3><a href="/book/{{book.id}}">{{book.title}}</a></h3>
+              <h3><a class="book-title" href="/book/{{book.id}}">{{book.title}}</a></h3>
               <p>{{book.author}}</p>
               <div class="properties-footer d-flex justify-content-between align-items-center">
               <div class="review">
               <div class="rating">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star-half-alt"></i>
+                {% for i in "12345" %}
+                  {% if i|add:0 <= review.rating %}
+                      <i class="fas fa-star y-rating"></i>
+                  {% else %}
+                      <i class="fas fa-star no-rating"></i>
+                  {% endif %}
+                {% endfor %}
               </div>
               <p>(<span>{{book.reviews.count}}</span> Review)</p>
               </div>

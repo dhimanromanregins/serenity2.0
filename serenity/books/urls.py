@@ -12,4 +12,6 @@ urlpatterns = [
     path('generate_audio/<int:pk>/', views.generate_audio, name='generate_summary_audio'),
     path('book/<int:pk>/save/', views.save_book, name='save_book'),
     path('unsave-book/<int:pk>/', views.unsave_book, name='unsave_book'),
+    path('book-read/', views.book_read, name='book_read'),
+    path('book-summary/', views.book_summary, name='book_summary'),
 ]

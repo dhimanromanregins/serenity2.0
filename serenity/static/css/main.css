@@ -68,3 +68,30 @@ a.saved-read-book {
 a.saved-read-book:hover {
     color: #0d0da3bd;;
 }
+
+.book-title:hover {
+    color: black;
+}
+
+.book-summary {
+    background: #ff1616;
+    color: white;
+    padding: 20px 30px;
+    border-radius: 35px;
+    margin: 10px 0
+}
+
+.book-summary .book-title {
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.book-summary .book-title:hover {
+    color: white;
+}
+
+.logo a {
+    color: red;
+    font-weight: bold;
+    font-size: 30px;
+}

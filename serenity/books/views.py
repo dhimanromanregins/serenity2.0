@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Book, Genre
+from .models import Book, Genre, Summary
 from .forms import BookForm
 from django.views.generic import ListView, DetailView
 from audiobooks.models import Audiobook
@@ -7,10 +7,11 @@ from django.db.models import Q, Exists, OuterRef
 from dashboard.models import ReadingHistory, RecentlyViewed, SaveBook
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from .document import BookDocument
+# from .document import BookDocument
 from django_elasticsearch_dsl.search import Search
 from .utils import synthesize_speech
 from django.conf import settings
+# from .search import BookDocument
 
 
 class BookListView(ListView):
@@ -165,15 +166,17 @@ def search_books(request):
 
     books = Book.objects.all()
 
-    # Apply search filters
     if query:
-        books = Book.objects.filter(title__icontains=query) | Book.objects.filter(
-            author__icontains=query) | Book.objects.filter(genre__icontains=query) | Book.objects.filter(
-            isbn__icontains=query)
-    else:
-        books = Book.objects.all()
+        s = Search(index='books').query(
+            'multi_match',
+            query=query,
+            fields=['title', 'author.name', 'genre.name', 'summary.text', 'isbn']
+        )
+        search_results = s.execute()
+        ids = [hit.meta.id for hit in search_results]
+        print('+++++++++++++++++++', ids)
+        books = books.filter(id__in=ids)
 
-    # Filter by genre if selected
     if genre_id:
         try:
             genre = Genre.objects.get(id=genre_id)
@@ -214,3 +217,21 @@ def unsave_book(request, pk):
     if saved_book.exists():
         saved_book.delete()
     return redirect('book_detail', pk=pk)
+
+@login_required
+def book_read(request):
+    selected_genre = request.GET.get('genre', '')
+    books = RecentlyViewed.objects.filter(user=request.user)
+    if selected_genre:
+        books = books.filter(book__genre=selected_genre)
+    genres = Genre.objects.all()
+    return render(request, 'books/book_read.html', {'books': books, 'genres': genres, 'selected_genre': selected_genre})
+
+@login_required
+def book_summary(request):
+    selected_genre = request.GET.get('genre', '')
+    books = Book.objects.all()
+    if selected_genre:
+        books = books.filter(genre=selected_genre)
+    genres = Genre.objects.all()
+    return render(request, 'books/book_summary.html', {'books': books, 'genres': genres, 'selected_genre': selected_genre})

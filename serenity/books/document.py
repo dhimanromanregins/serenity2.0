@@ -29,4 +29,4 @@ class BookDocument(Document):
     class Django:
         model = Book
         fields = [] 
-        models = [Summary]
+        # models = [Summary]
