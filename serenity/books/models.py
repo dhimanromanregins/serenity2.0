@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import Avg
 from django.apps import apps
+from django.conf import settings
 
 class Genre(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -44,3 +45,4 @@ class Book(models.Model):
         Review = apps.get_model('reviews', 'Review')
         rvws = Review.objects.filter(book=self, is_moderated=True)
         return rvws
+

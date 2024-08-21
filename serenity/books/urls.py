@@ -10,4 +10,6 @@ urlpatterns = [
     path('book/patch/<int:pk>/', views.patch_book, name='patch_book'),
     path('search/', views.search_books, name='search_books'),  # Add search_books view
     path('generate_audio/<int:pk>/', views.generate_audio, name='generate_summary_audio'),
+    path('book/<int:pk>/save/', views.save_book, name='save_book'),
+    path('unsave-book/<int:pk>/', views.unsave_book, name='unsave_book'),
 ]

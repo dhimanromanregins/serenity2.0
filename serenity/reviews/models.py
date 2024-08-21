@@ -13,3 +13,13 @@ class Review(models.Model):
 
     def __str__(self):
         return f"Review by {self.user} for {self.book.title}"
+
+
+class Feedback(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_resolved = models.BooleanField(default=False)  # Track if the feedback has been resolved
+
+    def __str__(self):
+        return f"Feedback from {self.user} on {self.created_at.strftime('%Y-%m-%d')}"

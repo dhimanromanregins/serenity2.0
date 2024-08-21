@@ -11,10 +11,13 @@ class ReadingHistory(models.Model):
     def __str__(self):
         return f"{self.user.username} read {self.book.title} on {self.date_read}"
 
-class SavedBook(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+class SaveBook(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='save_books')
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='saved_by_users')
     saved_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'book')
 
     def __str__(self):
         return f"{self.user.username} saved {self.book.title}"

@@ -6,3 +6,4 @@ admin.site.register(Genre)
 admin.site.register(Summary)
 admin.site.register(Author)
 
+

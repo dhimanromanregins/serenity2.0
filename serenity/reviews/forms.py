@@ -1,5 +1,5 @@
 from django import forms
-from .models import Review
+from .models import Review, Feedback
 
 class ReviewForm(forms.ModelForm):
     class Meta:
@@ -14,3 +14,12 @@ class ReviewForm(forms.ModelForm):
         if rating < 1 or rating > 5:
             raise forms.ValidationError("Rating must be between 1 and 5.")
         return rating
+
+
+class FeedbackForm(forms.ModelForm):
+    class Meta:
+        model = Feedback
+        fields = ['message']
+        widgets = {
+            'message': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Enter your feedback here...'}),
+        }

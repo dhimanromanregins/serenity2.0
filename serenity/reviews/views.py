@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from .models import Review
-from .forms import ReviewForm
+from .forms import ReviewForm, FeedbackForm
 from books.models import Book
 
 @login_required
@@ -39,3 +39,19 @@ def book_detail(request, pk):
     return render(request, 'books/book_detail.html', {'book': book, 'reviews': reviews})
 
 
+
+def submit_feedback(request):
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            feedback = form.save(commit=False)
+            feedback.user = request.user
+            feedback.save()
+            return redirect('feedback_thanks')  # Redirect to a thank-you page or feedback list
+    else:
+        form = FeedbackForm()
+    return render(request, 'reviews/submit_feedback.html', {'form': form})
+
+
+def feedback_thanks(request):
+    return render(request, 'reviews/feedback_thanks.html')

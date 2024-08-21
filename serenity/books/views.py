@@ -4,7 +4,8 @@ from .forms import BookForm
 from django.views.generic import ListView, DetailView
 from audiobooks.models import Audiobook
 from django.db.models import Q, Exists, OuterRef
-from dashboard.models import ReadingHistory, SavedBook, RecentlyViewed
+from dashboard.models import ReadingHistory, RecentlyViewed, SaveBook
+from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from .document import BookDocument
 from django_elasticsearch_dsl.search import Search
@@ -23,7 +24,7 @@ class BookListView(ListView):
         # Get search query, selected genre, and audiobook filter from request
         search_query = self.request.GET.get('q', '')
         selected_genre = self.request.GET.get('genre', '')
-        has_audiobook = self.request.GET.get('has_audiobook', False)
+        has_audiobook = self.request.GET.get('has_audiobook', '') == 'on'
 
         # Apply search filter with Elasticsearch
         if search_query:
@@ -42,17 +43,9 @@ class BookListView(ListView):
 
         # Apply audiobook filter
         if has_audiobook:
-            queryset = queryset.filter(audiobook__isnull=False)
+            queryset = queryset.filter(audiobooks__isnull=False).distinct()
 
         return queryset
-
-    def get_context_data(self, **   kwargs):
-        context = super().get_context_data(**kwargs)
-        context['genres'] = Genre.objects.all()
-        context['search_query'] = self.request.GET.get('q', '')
-        context['selected_genre'] = self.request.GET.get('genre', '')
-        context['has_audiobook'] = self.request.GET.get('has_audiobook', False)
-        return context
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -61,11 +54,19 @@ class BookListView(ListView):
         # Pass the current search query and selected genre to the template
         context['search_query'] = self.request.GET.get('q', '')
         context['selected_genre'] = self.request.GET.get('genre', '')
+        context['has_audiobook'] = self.request.GET.get('has_audiobook', '') == 'on'
 
         if self.request.user.is_authenticated:
             recently_viewed = RecentlyViewed.objects.filter(user=self.request.user).select_related('book')
             context['recently_viewed'] = recently_viewed
+            saved_books = SaveBook.objects.filter(user=self.request.user).select_related('book')
+            context['saved_books'] = saved_books
+
+            # Get reading history
+            reading_history = ReadingHistory.objects.filter(user=self.request.user).select_related('book')
+            context['reading_history'] = reading_history
         return context
+
 
 
 class BookDetailView(DetailView):
@@ -97,15 +98,20 @@ class BookDetailView(DetailView):
         else:
             context['filtered_audiobooks'] = audiobooks
 
-        # Handle voice selection and generate audio
-        selected_voice = self.request.POST.get('voice',
-                                               'en-US-Wavenet-D')  # Default to a specific voice if not selected
-        context['selected_voice'] = selected_voice
+        if self.request.user.is_authenticated:
+            context['is_saved'] = SaveBook.objects.filter(user=self.request.user, book=self.object).exists()
+        else:
+            context['is_saved'] = False
 
-        summary_text = self.object.summary.text
-        audio_filename = f"{self.object.id}_summary_{selected_voice}.mp3"
-        audio_file_path = synthesize_speech(summary_text, audio_filename, selected_voice)
-        context['audio_file_url'] = settings.MEDIA_URL + 'text-to-speech/' + audio_filename
+        # Handle voice selection and generate audio
+        # selected_voice = self.request.POST.get('voice',
+        #                                        'en-US-Wavenet-D')  # Default to a specific voice if not selected
+        # context['selected_voice'] = selected_voice
+
+        # summary_text = self.object.summary.text
+        # audio_filename = f"{self.object.id}_summary_{selected_voice}.mp3"
+        # audio_file_path = synthesize_speech(summary_text, audio_filename, selected_voice)
+        # context['audio_file_url'] = settings.MEDIA_URL + 'text-to-speech/' + audio_filename
 
         return context
 
@@ -188,4 +194,19 @@ def generate_audio(request, pk):
         summary_text = book.summary.text
         audio_filename = f"{book.id}_summary_{selected_voice}.mp3"
         synthesize_speech(summary_text, audio_filename, selected_voice)
+    return redirect('book_detail', pk=pk)
+
+
+@login_required
+def save_book(request, pk):
+    book = get_object_or_404(Book, id=pk)
+    SaveBook.objects.get_or_create(user=request.user, book=book)
+    return redirect('book_detail', pk=book.id)  # Use pk here
+
+@login_required
+def unsave_book(request, pk):
+    book = get_object_or_404(Book, id=pk)
+    saved_book = SaveBook.objects.filter(user=request.user, book=book)
+    if saved_book.exists():
+        saved_book.delete()
     return redirect('book_detail', pk=pk)

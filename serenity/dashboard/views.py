@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from .models import ReadingHistory, SavedBook
+from .models import ReadingHistory
 from books.models import Book
 
 @login_required
