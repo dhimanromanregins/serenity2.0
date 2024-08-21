@@ -18,7 +18,6 @@ class BookDocument(Document):
     title = fields.TextField()
     isbn = fields.TextField()
     published_date = fields.DateField()
-    image = fields.TextField()  # Assuming image is a URL or path
 
     class Index:
         name = 'books'
@@ -29,4 +28,5 @@ class BookDocument(Document):
 
     class Django:
         model = Book
-        fields = []  # No need to include fields here since they're defined above
+        fields = [] 
+        models = [Summary]

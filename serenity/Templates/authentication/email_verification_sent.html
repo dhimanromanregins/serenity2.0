@@ -1,7 +1,10 @@
-{% extends 'authentication/base.html' %}
-{% block title %}Email Verification Sent{% endblock %}
-
-{% block content %}
-<h2>Email Verification Sent</h2>
-<p>An email has been sent to {{ user.email }}. Please check your inbox and follow the instructions to verify your account.</p>
+{% extends '../base.html' %}
+{% block body %}
+<header>
+    <div class="verify-section align-items-center justify-content-center" style="padding: 50px;">
+        <h1>An email has been sent to your inbox. Please check it to activate your account.</h1>
+    </div>
+</header>
 {% endblock %}
+
+

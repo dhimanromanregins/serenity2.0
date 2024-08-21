@@ -30,23 +30,6 @@
         </div>
     </form>
 
-    <!-- Audiobook Filter -->
-    <form method="get" class="audiobook-form">
-        <div class="form-group">
-            <label>
-                <input type="checkbox" name="has_audiobook" {% if has_audiobook %}checked{% endif %}> Show only books with audiobooks
-            </label>
-        </div>
-        <button type="submit" class="btn btn-primary">Apply Filter</button>
-    </form>
-
-    <a href="{% url 'submit_feedback' %}">Submit Feedback</a>
-
-    <!-- Dashboard Link -->
-    <div class="dashboard-link">
-        <a href="{% url 'dashboard' %}" class="btn btn-secondary">Go to Dashboard</a>
-    </div>
-
     <h2>Results</h2>
     {% if books %}
         <ul class="book-list">
@@ -69,94 +52,7 @@
             {% endfor %}
         </ul>
     {% else %}
-        {% if has_audiobook %}
-            <p>No books with audiobooks found.</p>
-        {% else %}
-            <p>No books found.</p>
-        {% endif %}
-    {% endif %}
-
-    <!-- User Dashboard Section -->
-    {% if user.is_authenticated %}
-        <h2>Your Dashboard</h2>
-
-        <!-- Saved Books -->
-        <h3>Saved Books</h3>
-        {% if saved_books %}
-            <ul class="book-list">
-                {% for saved_book in saved_books %}
-                    <li class="book-item">
-                        <div class="book-image">
-                            {% if saved_book.book.image %}
-                                <img src="{{ saved_book.book.image.url }}" alt="{{ saved_book.book.title }}">
-                            {% else %}
-                                <img src="{% static 'images/default_book_cover.jpg' %}" alt="Default Cover">
-                            {% endif %}
-                        </div>
-                        <div class="book-details">
-                            <h3><a href="{% url 'book_detail' saved_book.book.id %}">{{ saved_book.book.title }}</a></h3>
-                            <p><strong>Author:</strong> {{ saved_book.book.author }}</p>
-                            <p><strong>Genre:</strong> {{ saved_book.book.genre.name }}</p>
-                        </div>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No saved books.</p>
-        {% endif %}
-
-        <!-- Reading History -->
-        <h3>Reading History</h3>
-        {% if reading_history %}
-            <ul class="book-list">
-                {% for history in reading_history %}
-                    <li class="book-item">
-                        <div class="book-image">
-                            {% if history.book.image %}
-                                <img src="{{ history.book.image.url }}" alt="{{ history.book.title }}">
-                            {% else %}
-                                <img src="{% static 'images/default_book_cover.jpg' %}" alt="Default Cover">
-                            {% endif %}
-                        </div>
-                        <div class="book-details">
-                            <h3><a href="{% url 'book_detail' history.book.id %}">{{ history.book.title }}</a></h3>
-                            <p><strong>Author:</strong> {{ history.book.author }}</p>
-                            <p><strong>Genre:</strong> {{ history.book.genre.name }}</p>
-                            <p><strong>Date Read:</strong> {{ history.date_read }}</p>
-                        </div>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No reading history available.</p>
-        {% endif %}
-
-        <!-- Recently Viewed Books -->
-        <h3>Recently Viewed Books</h3>
-        {% if recently_viewed %}
-            <ul class="book-list">
-                {% for viewed in recently_viewed %}
-                    <li class="book-item">
-                        <div class="book-image">
-                            {% if viewed.book.image %}
-                                <img src="{{ viewed.book.image.url }}" alt="{{ viewed.book.title }}">
-                            {% else %}
-                                <img src="{% static 'images/default_book_cover.jpg' %}" alt="Default Cover">
-                            {% endif %}
-                        </div>
-                        <div class="book-details">
-                            <h3><a href="{% url 'book_detail' viewed.book.id %}">{{ viewed.book.title }}</a></h3>
-                            <p><strong>Author:</strong> {{ viewed.book.author }}</p>
-                            <p><strong>Genre:</strong> {{ viewed.book.genre.name }}</p>
-                        </div>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No recently viewed books.</p>
-        {% endif %}
-    {% else %}
-        <p>Please <a href="{% url 'login' %}">login</a> to see your dashboard.</p>
+        <p>No books found.</p>
     {% endif %}
 </body>
 </html>

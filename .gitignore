@@ -1,3 +1,30 @@
-venv
-__pycache__
+# Virtual environment
+venv/
+*.egg-info/
+*.pyc
+__pycache__/
 db.sqlite3
+
+# Environment variables
+.env
+
+# Django settings
+*.log
+
+# Media and static files
+media/
+staticfiles/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+
+# macOS and Windows system files
+.DS_Store
+Thumbs.db
+
+# Python build artifacts
+build/
+dist/
+*.egg

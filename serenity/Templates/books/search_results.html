@@ -1,27 +1,46 @@
-{% extends "base_generic.html" %}
-
-{% block content %}
-  <h1>Search Books</h1>
-  
-  <form method="get">
-    <input type="text" name="q" value="{{ search_query }}" placeholder="Search for books...">
-    <select name="genre">
-      <option value="">All Genres</option>
-      {% for genre in genres %}
-        <option value="{{ genre.id }}" {% if selected_genre == genre.id|stringformat:"s" %}selected{% endif %}>{{ genre.name }}</option>
+{% extends "../base.html" %} {% block body %}
+<h1 style="text-align: center">Search Results</h1>
+<div class="container">
+  <div class="tab-content" id="nav-tabContent">
+    <div
+      class="tab-pane fade show active"
+      id="nav-one"
+      role="tabpanel"
+      aria-labelledby="nav-one-tab"
+    >
+    <div class="row">
+      {% for book in books %}
+          <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+              <div class="properties pb-30">
+              <div class="properties-card">
+              <div class="properties-img">
+              <a href="/book/{{book.id}}"><img src="{{book.image.url}}" alt=""></a>
+              </div>
+              <div class="properties-caption properties-caption2">
+              <h3><a href="/book/{{book.id}}">{{book.title}}</a></h3>
+              <p>{{book.author}}</p>
+              <div class="properties-footer d-flex justify-content-between align-items-center">
+              <div class="review">
+              <div class="rating">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star-half-alt"></i>
+              </div>
+              <p>(<span>{{book.reviews.count}}</span> Review)</p>
+              </div>
+              <div class="price">
+              <span>$50</span>
+              </div>
+              </div>
+              </div>
+              </div>
+              </div>
+          </div>
       {% endfor %}
-    </select>
-    <button type="submit">Search</button>
-  </form>
-  
-  <h2>Results</h2>
-  <ul>
-    {% for book in books %}
-      <li>
-        <a href="{% url 'book_detail' book.id %}">{{ book.title }}</a> by {{ book.author }}
-      </li>
-    {% empty %}
-      <li>No books found.</li>
-    {% endfor %}
-  </ul>
+  </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

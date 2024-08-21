@@ -13,6 +13,7 @@ def submit_review(request, book_id):
             review = form.save(commit=False)
             review.book = book
             review.user = request.user
+            review.is_moderated = True
             review.save()
             return redirect('book_detail', pk=book_id)
     else:

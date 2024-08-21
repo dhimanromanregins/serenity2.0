@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resend Activation Email</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body>
-    <div class="container">
+{% extends '../base.html' %}
+{% block body %}
+<div class="container align-items-center justify-content-center">
+    <div class=" resend-activate">
         <h1>Resend Activation Email</h1>
         <form method="post">
             {% csrf_token %}
@@ -16,5 +9,6 @@
             <button type="submit">Resend Activation Email</button>
         </form>
     </div>
-</body>
-</html>
+</div>
+   
+{% endblock %}

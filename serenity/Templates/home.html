@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/slicknav.css' %}">
+    <link rel="stylesheet" href="{% static '/css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/price_rangs.css' %}">
+    <link rel="stylesheet" href="{% static '/css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static '/css/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/themify-icons.css' %}">
+    <link rel="stylesheet" href="{% static '/css/slick.css' %}">
+    <link rel="stylesheet" href="{% static '/css/nice-select.css' %}">
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+    <link rel="stylesheet" href="{% static '/css/main.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <title>Serenity</title>
+</head>
+<header>
+    <div class="header-area">
+    <div class="main-header ">
+    <div class="header-top ">
+    <div class="container">
+    <div class="row">
+    <div class="col-xl-12">
+    <div class="d-flex justify-content-between align-items-center flex-sm">
+    <div class="header-info-left d-flex align-items-center">
+    
+    <div class="logo">
+    <a href="/"><img src="{% static 'img/logo/logo.png' %}" alt=""></a>
+    </div>
+    
+    <form action="/search" class="form-box">
+        <input type="text" name="q" value="{{ search_query }}" placeholder="Search book by author or publisher">
+        <div class="search-icon">
+            <i class="ti-search"></i>
+        </div>
+    </form>
+    </div>
+    <div class="header-info-right d-flex align-items-center">
+    <ul>
+    <li>
+        {% if request.user.is_authenticated %}
+            <a href="/profile" class=" btn header-btn">Profile</a>
+        {% else %}
+            <a href="/login" class="btn header-btn">Sign in</a>
+        {% endif %}
+    </li>
+    </ul>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="header-bottom  header-sticky">
+    <div class="container">
+    <div class="row align-items-center">
+    <div class="col-xl-12">
+    
+    <div class="logo2">
+    <a href="/"><img src="{% static 'img/logo/logo.png' %}" alt=""></a>
+    </div>
+    
+    <div class="main-menu text-center d-none d-lg-block">
+    <nav>
+    <ul id="navigation">
+    <li><a href="/">Home</a></li>
+
+    <li><a href="category">Recommendations</a></li>
+    <li><a href="#">Feedback</a></li>
+    <li><a href="#">Summary</a></li>
+    <li><a href="#">Book Read</a></li>
+    <li><a href="#">Audio Book</a></li>
+    <li><a href="#">Book Download</a></li>
+   <li><a href="/contact">Contact</a></li>
+    </ul>
+    </nav>
+    </div>
+    </div>
+    
+    <div class="col-xl-12">
+    <div class="mobile_menu d-block d-lg-none"><div class="slicknav_menu"><a href="#" aria-haspopup="true" role="button" tabindex="0" class="slicknav_btn slicknav_collapsed"><span class="slicknav_menutxt">MENU</span><span class="slicknav_icon"><span class="slicknav_icon-bar"></span><span class="slicknav_icon-bar"></span><span class="slicknav_icon-bar"></span></span></a><ul class="slicknav_nav slicknav_hidden" aria-hidden="true" role="menu" style="display: none;">
+    <li><a href="/" role="menuitem" tabindex="-1">Home</a></li>
+    <li><a href="category" role="menuitem" tabindex="-1">Recommendations</a></li>
+    <li><a href="category" role="menuitem" tabindex="-1">Feedback</a></li>
+    <li><a href="category" role="menuitem" tabindex="-1">Summary</a></li>
+    <li><a href="category" role="menuitem" tabindex="-1">Book Read</a></li>
+    <li><a href="about.html" role="menuitem" tabindex="-1">About</a></li>
+    <li class="slicknav_collapsed slicknav_parent"><a href="#" role="menuitem" aria-haspopup="true" tabindex="-1" class="slicknav_item slicknav_row"><a href="#" tabindex="-1">Pages</a>
+    <span class="slicknav_arrow">+</span></a><ul class="submenu slicknav_hidden" role="menu" aria-hidden="true" style="display: none;">
+    <li><a href="/login" role="menuitem" tabindex="-1">login</a></li>
+    </ul>
+    </li>
+    <li><a href="/contact" role="menuitem" tabindex="-1">Contact</a></li>
+    </ul></div></div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </header>
+    <main>
+    
+    <div class="slider-area">
+    <div class="container">
+    <div class="row">
+    <div class="col-xl-12">
+    <div class="slider-active dot-style slick-initialized slick-slider slick-dotted">
+    
+    <div class="slick-list draggable"><div class="slick-track" style="opacity: 1; width: 3348px;"><div class="single-slider slider-height slider-bg1 d-flex align-items-center slick-slide" data-slick-index="0" aria-hidden="true" tabindex="-1" role="tabpanel" id="slick-slide00" aria-describedby="slick-slide-control00" style="width: 1116px; position: relative; left: 0px; top: 0px; z-index: 998; opacity: 0; transition: opacity 500ms;">
+    <div class="container">
+    <div class=" sliderheight3 row justify-content-center">
+    <div class="col-xxl-4 col-xl-4 col-lg-5 col-md-6 col-sm-7">
+    <div class="hero-caption text-center">
+    <span data-animation="fadeInUp" data-delay=".2s" class="" style="animation-delay: 0.2s;">Science Fiction</span>
+    <h1 data-animation="fadeInUp" data-delay=".4s" class="" style="animation-delay: 0.4s;">The History<br> of Phipino</h1>
+    <a href="#" class="btn hero-btn" data-animation="bounceIn" data-delay=".8s" tabindex="-1" style="animation-delay: 0.8s;">Browse Store</a>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="single-slider slider-height slider-bg2 d-flex align-items-center slick-slide slick-current slick-active" data-slick-index="1" aria-hidden="false" tabindex="0" role="tabpanel" id="slick-slide01" aria-describedby="slick-slide-control01" style="width: 1116px; position: relative; left: -1116px; top: 0px; z-index: 999; opacity: 1;">
+    <div class="container">
+    <div class=" sliderheight3 row justify-content-center">
+    <div class="col-xxl-4 col-xl-4 col-lg-5 col-md-6 col-sm-7">
+    <div class="hero-caption text-center">
+    <span data-animation="fadeInUp" data-delay=".2s" class="" style="animation-delay: 0.2s;">Science Fiction</span>
+    <h1 data-animation="fadeInUp" data-delay=".4s" class="" style="animation-delay: 0.4s;">The History<br> of Phipino</h1>
+    <a href="#" class="btn hero-btn" data-animation="bounceIn" data-delay=".8s" tabindex="0" style="animation-delay: 0.8s;">Browse Store</a>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div><div class="single-slider slider-height slider-bg3 d-flex align-items-center slick-slide" data-slick-index="2" aria-hidden="true" tabindex="-1" role="tabpanel" id="slick-slide02" aria-describedby="slick-slide-control02" style="width: 1116px; position: relative; left: -2232px; top: 0px; z-index: 998; opacity: 0;">
+    <div class="container">
+    <div class=" sliderheight3 row justify-content-center">
+    <div class="col-xxl-4 col-xl-4 col-lg-5 col-md-6 col-sm-7">
+    <div class="hero-caption text-center">
+    <span data-animation="fadeInUp" data-delay=".2s">Science Fiction</span>
+    <h1 data-animation="fadeInUp" data-delay=".4s">The History<br> of Phipino</h1>
+    <a href="#" class="btn hero-btn" data-animation="bounceIn" data-delay=".8s" tabindex="-1">Browse Store</a>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div></div></div>
+    
+    <ul class="slick-dots" style="display: block;" role="tablist"><li class="" role="presentation"><button type="button" role="tab" id="slick-slide-control00" aria-controls="slick-slide00" aria-label="1 of 3" tabindex="-1">1</button></li><li role="presentation" class="slick-active"><button type="button" role="tab" id="slick-slide-control01" aria-controls="slick-slide01" aria-label="2 of 3" tabindex="0" aria-selected="true">2</button></li><li role="presentation"><button type="button" role="tab" id="slick-slide-control02" aria-controls="slick-slide02" aria-label="3 of 3" tabindex="-1">3</button></li></ul></div>
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <section class="now-trending" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5 section-title">Read Books</h2>
+            <div id="readBooksSlider" class="slick-slider">
+                <!-- Book Cards -->
+                {% if not read_books %}
+                <div style="text-align: center; font-size: 25px;">No books</div>
+                {% endif %}
+                {% for book in read_books %}
+                    <div class="book-card" style="margin-right: 20px;"> <!-- Adjust margin as needed -->
+                        <div class="card">
+                            <div class="position-relative">
+                                <a href="/book/{{book.book.id}}"><img src="{{book.book.image.url}}" class="card-img-top" alt="{{book.book.title}}"></a>
+                                <div class="discount-badge position-absolute top-0 end-0 bg-danger text-white p-2">20% OFF
+                                </div>
+                            </div>
+                            <div class="card-body text-center">
+                                <a class="saved-read-book" href="/book/{{book.book.id}}/"><h5 class="card-title">{{book.book.title}}</h5></a>
+                                <div class="review all-book-rating">
+                                    <div class="rating">
+                                        {% for i in "12345" %}
+                                            {% if i|add:0 <= book.book.average_rating %}
+                                                <i class="fas fa-star y-rating"></i>
+                                            {% else %}
+                                                <i class="fas fa-star no-rating"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <!-- <p class="card-text">$15.99</p> -->
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <!-- Add more book cards as needed -->
+            </div>
+        </div>
+    </section>
+    <section class="now-trending" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5 section-title">Saved Books</h2>
+            <div id="savedBooksSlider" class="slick-slider">
+                <!-- Book Cards -->
+                {% if not saved_books %}
+                <div style="text-align: center; font-size: 25px;">No books</div>
+                {% endif %}
+                {% for book in saved_books %}
+                    <div class="book-card" style="margin-right: 20px;"> <!-- Adjust margin as needed -->
+                        <div class="card">
+                            <div class="position-relative">
+                                <a href="/book/{{book.book.id}}"><img src="{{book.book.image.url}}" class="card-img-top" alt="{{book.book.title}}"></a>
+                                <div class="discount-badge position-absolute top-0 end-0 bg-danger text-white p-2">20% OFF
+                                </div>
+                            </div>
+                            <div class="card-body text-center">
+                                <a class="saved-read-book" href="/book/{{book.book.id}}/"><h5 class="card-title">{{book.book.title}}</h5></a>
+                                <div class="review all-book-rating">
+                                    <div class="rating">
+                                        {% for i in "12345" %}
+                                            {% if i|add:0 <= book.book.average_rating %}
+                                                <i class="fas fa-star y-rating"></i>
+                                            {% else %}
+                                                <i class="fas fa-star no-rating"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <!-- <p class="card-text">$15.99</p> -->
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <!-- Add more book cards as needed -->
+            </div>
+        </div>
+    </section>
+    <section class="our-client section-padding best-selling">
+        <div class="container">
+        <div class="row justify-content-between">
+        <div class="col-xl-5 col-lg-5 col-md-12">
+        
+        <div class="section-tittle  mb-40">
+        <h2>Latest Published items</h2>
+        </div>
+        </div>
+        <div class="col-xl-7 col-lg-7 col-md-12">
+        <div class="nav-button mb-40">
+        
+        <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <a class="nav-link {% if not selected_genre %}active{% endif %}" href="/">All</a>
+        {% for gen in genres %}
+            <a class="nav-link{% if gen.id|stringformat:"s" == selected_genre %} active{% endif %}" href="/?genre={{gen.id}}">{{gen.name}}</a>
+        {% endfor %}
+        </div>
+        </nav>
+        
+        </div>
+        </div>
+        </div>
+        </div>
+        <div class="container">
+        
+        <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-one" role="tabpanel" aria-labelledby="nav-one-tab">
+            <div class="row">
+                {% for book in books %}
+                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+                    <div class="properties pb-30">
+                        <div class="properties-card">
+                            <div class="properties-img">
+                            <a href="/book/{{book.id}}"><img src="{{book.image.url}}" alt="{{book.book.title}}"></a>
+                            </div>
+                            <div class="properties-caption properties-caption2">
+                                <h3><a href="/book/{{book.id}}">{{book.title}}</a></h3>
+                                <p>{{book.author.name}}</p>
+                                <div class="properties-footer d-flex justify-content-between align-items-center">
+                                    <div class="review all-book-rating">
+                                        <div class="rating">
+                                            {% for i in "12345" %}
+                                                {% if i|add:0 <= book.average_rating %}
+                                                    <i class="fas fa-star y-rating"></i>
+                                                {% else %}
+                                                    <i class="fas fa-star no-rating"></i>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    <p>(<span>{{book.reviews.count}}</span> Review)</p>
+                                    </div>
+                                    <!-- <div class="price">
+                                        <span>$50</span>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-xl-12">
+        <div class="more-btn text-center mt-15">
+        <a href="#" class="border-btn border-btn2 more-btn2">Browse More</a>
+        </div>
+        </div>
+        </div>
+        </div>
+        </section>
+
+
+    
+    </main>
+    <footer>
+    <div class="footer-wrappper section-bg">
+    <div class="footer-area footer-padding">
+    <div class="container">
+    <div class="row justify-content-between">
+    <div class="col-xl-3 col-lg-5 col-md-4 col-sm-6">
+    <div class="single-footer-caption mb-50">
+    <div class="single-footer-caption mb-30">
+    
+    <div class="footer-logo mb-25">
+    <a href="/"><img src="{% static 'img/logo/logo2_footer.png' %}" alt=""></a>
+    </div>
+    <div class="footer-tittle">
+    <div class="footer-pera">
+    <p>Get the breathing space now, and we’ll extend your term at the other end year for go.</p>
+    </div>
+    </div>
+    
+    <div class="footer-social">
+    <a href="https://bit.ly/sai4ull"><i class="fab fa-facebook"></i></a>
+    <a href="#"><i class="fab fa-instagram"></i></a>
+    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+    <a href="#"><i class="fab fa-youtube"></i></a>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5">
+    <div class="single-footer-caption mb-50">
+    <div class="footer-tittle">
+    <h4>Book Category</h4>
+    <ul>
+    <li><a href="#">History</a></li>
+    <li><a href="#">Horror - Thriller</a></li>
+    <li><a href="#">Love Stories</a></li>
+    <li><a href="#">Science Fiction</a></li>
+    <li><a href="#">Business</a></li>
+    </ul>
+    </div>
+    </div>
+    </div>
+    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+    <div class="single-footer-caption mb-50">
+    <div class="footer-tittle">
+    <h4>&nbsp;</h4>
+    <ul>
+    <li><a href="#">Biography</a></li>
+    <li><a href="#">Astrology</a></li>
+    <li><a href="#">Digital Marketing</a></li>
+    <li><a href="#">Software Development</a></li>
+    <li><a href="#">Ecommerce</a></li>
+    </ul>
+    </div>
+    </div>
+    </div>
+    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
+    <div class="single-footer-caption mb-50">
+    <div class="footer-tittle">
+    <h4>Site Map</h4>
+    <ul class="mb-20">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">About Us</a></li>
+    <li><a href="#">Contact</a></li>
+    </ul>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    
+    <div class="footer-bottom-area">
+    <div class="container">
+    <div class="footer-border">
+    <div class="row d-flex align-items-center">
+    <div class="col-xl-12 ">
+    <div class="footer-copy-right text-center">
+    Copyright © 2024  | All rights reserved 
+    </div> 
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#readBooksSlider').slick({
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 2000,
+                arrows: true,
+                dots: true,
+                responsive: [
+                    {
+                        breakpoint: 1024, // For screens wider than 1024px
+                        settings: {
+                            slidesToShow: 3
+                        }
+                    },
+                    {
+                        breakpoint: 768, // For screens wider than 768px
+                        settings: {
+                            slidesToShow: 2
+                        }
+                    },
+                    {
+                        breakpoint: 480, // For screens wider than 480px
+                        settings: {
+                            slidesToShow: 1
+                        }
+                    }
+                ]
+            });
+            $('#savedBooksSlider').slick({
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 2000,
+                arrows: true,
+                dots: true,
+                responsive: [
+                    {
+                        breakpoint: 1024, // For screens wider than 1024px
+                        settings: {
+                            slidesToShow: 3
+                        }
+                    },
+                    {
+                        breakpoint: 768, // For screens wider than 768px
+                        settings: {
+                            slidesToShow: 2
+                        }
+                    },
+                    {
+                        breakpoint: 480, // For screens wider than 480px
+                        settings: {
+                            slidesToShow: 1
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+</body>
+    </html>

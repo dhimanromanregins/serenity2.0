@@ -15,7 +15,7 @@ from django.conf import settings
 
 class BookListView(ListView):
     model = Book
-    template_name = 'books/book_list.html'
+    template_name = 'home.html'
     context_object_name = 'books'
 
     def get_queryset(self):
@@ -58,7 +58,8 @@ class BookListView(ListView):
 
         if self.request.user.is_authenticated:
             recently_viewed = RecentlyViewed.objects.filter(user=self.request.user).select_related('book')
-            context['recently_viewed'] = recently_viewed
+            context['read_books'] = recently_viewed
+
             saved_books = SaveBook.objects.filter(user=self.request.user).select_related('book')
             context['saved_books'] = saved_books
 
@@ -102,6 +103,9 @@ class BookDetailView(DetailView):
             context['is_saved'] = SaveBook.objects.filter(user=self.request.user, book=self.object).exists()
         else:
             context['is_saved'] = False
+        
+        if self.request.user.is_authenticated:
+            RecentlyViewed.objects.get_or_create(user=self.request.user, book=self.object)
 
         # Handle voice selection and generate audio
         # selected_voice = self.request.POST.get('voice',
