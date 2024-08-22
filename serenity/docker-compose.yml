@@ -1,14 +1,13 @@
-version: '3.8'
-
 services:
-  django:
-    build: .
-    working_dir: /serenity
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.0
     volumes:
-      - .:/serenity
+      - esdata01:/usr/share/elasticsearch/data
     ports:
-      - "8000:8000"
-    command: python manage.py runserver 0.0.0.0:8000
+      - 9200:9200
     environment:
-      - PYTHONUNBUFFERED=1
-      - DJANGO_SETTINGS_MODULE=serenity.settings
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+
+volumes:
+  esdata01:

@@ -32,27 +32,23 @@ def genre_success(request):
 
 @login_required
 def recomended_books(request):
-    # Get the logged-in user
     user = request.user
 
     # Retrieve user interests and genres
     user_interests = UserIntrests.objects.filter(user=user)
     user_genres = UserGenre.objects.filter(user=user)
 
-    # Filter books by the user's genres
-    if user_genres.exists():
-        # Get the names of the genres the user is interested in
-        genre_names = [user_genre.name for user_genre in user_genres]
-        # Filter books that belong to any of these genres
-        books = Book.objects.filter(genre__name__in=genre_names)
-    else:
-        books = Book.objects.none()  # No genres mean no books should be returned
+    # Initialize books queryset
+    books = Book.objects.none()
 
-    # Combine interests into a single list of queries
+    if user_genres.exists():
+        genre_names = [user_genre.name for user_genre in user_genres]
+        books = Book.objects.filter(genre__name__in=genre_names)
+
+    # Collect queries from user interests
     queries = [interest.text for interest in user_interests]
 
     if queries:
-        # Use the combined queries to perform a search
         s = Search(index='books').query(
             'multi_match',
             query=" ".join(queries),
@@ -62,12 +58,20 @@ def recomended_books(request):
         ids = [hit.meta.id for hit in search_results]
         books = books.filter(id__in=ids)
 
+    # Group books by genre
+    books_by_genre = {}
+    if books.exists():
+        for book in books:
+            genre = book.genre.name
+            if genre not in books_by_genre:
+                books_by_genre[genre] = []
+            books_by_genre[genre].append(book)
+
     # Get all genres for the dropdown
     genres = Genre.objects.all()
 
-    return render(request, 'books/search_results.html', {
-        'books': books,
+    return render(request, 'recomendations/recomended_books.html', {
+        'books_by_genre': books_by_genre,
         'genres': genres,
         'selected_genre': request.GET.get('genre', ''),
-        # 'search_query': " ".join(queries)
     })
