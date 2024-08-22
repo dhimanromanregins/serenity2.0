@@ -1,17 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Book, Genre, Summary
+from .models import Book, Genre
 from .forms import BookForm
 from django.views.generic import ListView, DetailView
-from audiobooks.models import Audiobook
-from django.db.models import Q, Exists, OuterRef
+from django.db.models import Q
 from dashboard.models import ReadingHistory, RecentlyViewed, SaveBook
 from django.contrib.auth.decorators import login_required
-from django.utils import timezone
-# from .document import BookDocument
-from django_elasticsearch_dsl.search import Search
 from .utils import synthesize_and_play_speech
 from django.conf import settings
-# from .search import BookDocument
 from recomendations.models import UserIntrests
 import re
 
@@ -22,28 +17,12 @@ class BookListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-
-        # Get search query, selected genre, and audiobook filter from request
-        search_query = self.request.GET.get('q', '')
         selected_genre = self.request.GET.get('genre', '')
         has_audiobook = self.request.GET.get('has_audiobook', '') == 'on'
 
-        # Apply search filter with Elasticsearch
-        if search_query:
-            s = Search(index='books').query(
-                'multi_match',
-                query=search_query,
-                fields=['title', 'author.name', 'genre.name', 'summary.book_title', 'summary.text', 'isbn']
-            )
-            search_results = s.execute()
-            ids = [hit.meta.id for hit in search_results]
-            queryset = queryset.filter(id__in=ids)
-
-        # Apply genre filter
         if selected_genre:
             queryset = queryset.filter(genre__id=selected_genre)
 
-        # Apply audiobook filter
         if has_audiobook:
             queryset = queryset.filter(audiobooks__isnull=False).distinct()
 
@@ -51,10 +30,7 @@ class BookListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Get all genres to populate the dropdown
         context['genres'] = Genre.objects.all()
-        # Pass the current search query and selected genre to the template
-        context['search_query'] = self.request.GET.get('q', '')
         context['selected_genre'] = self.request.GET.get('genre', '')
         context['has_audiobook'] = self.request.GET.get('has_audiobook', '') == 'on'
 
@@ -65,16 +41,14 @@ class BookListView(ListView):
             saved_books = SaveBook.objects.filter(user=self.request.user).select_related('book')
             context['saved_books'] = saved_books
 
-            # Get reading history
             reading_history = ReadingHistory.objects.filter(user=self.request.user).select_related('book')
             context['reading_history'] = reading_history
         return context
 
 
 def sanitize_filename(filename):
-    # Replace spaces and special characters with underscores
-    sanitized = re.sub(r'[\/:*?"<>|]', '_', filename)  # Replace invalid characters
-    sanitized = re.sub(r'\s+', '_', sanitized)  # Replace spaces with underscores
+    sanitized = re.sub(r'[\/:*?"<>|]', '_', filename)
+    sanitized = re.sub(r'\s+', '_', sanitized)
     return sanitized
 
 
@@ -86,22 +60,17 @@ class BookDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Fetch all reviews related to the book that are moderated
         context['reviews'] = self.object.reviews.filter(is_moderated=True)
 
-        # Get all audiobooks related to this book
         audiobooks = self.object.audiobooks.all()
         context['audiobooks'] = audiobooks
 
-        # Extract unique narrators from the audiobooks
         narrators = audiobooks.values_list('narrator', flat=True).distinct()
         context['narrators'] = narrators
 
-        # Get selected narrator from the request (if any)
         selected_narrator = self.request.GET.get('narrator')
         context['selected_narrator'] = selected_narrator
 
-        # Filter audiobooks by selected narrator if any narrator is selected
         if selected_narrator:
             context['filtered_audiobooks'] = audiobooks.filter(narrator=selected_narrator)
         else:
@@ -115,12 +84,10 @@ class BookDetailView(DetailView):
         if self.request.user.is_authenticated:
             RecentlyViewed.objects.get_or_create(user=self.request.user, book=self.object)
 
-        # Generate audio file for summary
         summary_text = self.object.summary.text
         book_title = self.object.title
         audio_filename = f"{sanitize_filename(book_title)}.mp3"
 
-        # Call the synthesize_and_play_speech function
         audio_file_path = synthesize_and_play_speech(summary_text, audio_filename)
         context['audio_file_url'] = settings.MEDIA_URL + 'text-to-speech/' + audio_filename
 
@@ -172,21 +139,13 @@ def search_books(request):
 
     if query:
         UserIntrests.objects.create(user=request.user, text=query)
-        s = Search(index='books').query(
-            'multi_match',
-            query=query,
-            fields=['title', 'author.name', 'genre.name', 'summary.text', 'isbn']
-        )
-        search_results = s.execute()
-        ids = [hit.meta.id for hit in search_results]
-        books = books.filter(id__in=ids)
-
+        books = books.filter(Q(title__icontains=query) | Q(isbn__icontains=query) | Q(author__name__icontains=query) | Q(author__bio__icontains=query) | Q(summary__text__icontains=query))
     if genre_id:
         try:
             genre = Genre.objects.get(id=genre_id)
             books = books.filter(genre=genre)
         except Genre.DoesNotExist:
-            books = books.none()  # Return an empty queryset if genre doesn't exist
+            books = books.none()
 
     genres = Genre.objects.all()
 

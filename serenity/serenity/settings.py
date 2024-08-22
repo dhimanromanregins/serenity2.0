@@ -32,7 +32,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django_elasticsearch_dsl',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -60,21 +59,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'serenity.urls'
-
-
-
-
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'haystack',
-    },
-}
-connections.create_connection(
-    alias='default',
-    hosts=['http://localhost:9200']
-)
 
 TEMPLATES = [
     {
@@ -104,13 +88,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-ELASTICSEARCH_DSL = {
-     'default': {
-           'hosts': 'http://localhost:9200',
-       },
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
