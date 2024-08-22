@@ -1,11 +1,18 @@
 {% extends '../base.html' %}
 {% block body %}
+<!-- Slick Slider CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
+
+<!-- Slick Slider JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+
 <section class="our-client section-padding best-selling">
     <div class="container">
     <div class="row justify-content-between">
     <div class="col-xl-5 col-lg-5 col-md-12">
     
-    <div class="section-tittle  mb-40">
+    <div class="section-title  mb-40">
     <h2>Book Read</h2>
     </div>
     </div>
@@ -34,7 +41,7 @@
                 <div style="text-align: center; font-size: 25px;">No books</div>
             {% endif %}
             {% for book in books %}
-            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
                 <div class="properties pb-30">
                     <div class="properties-card">
                         <div class="properties-img">
@@ -79,4 +86,5 @@
     {% endif %}
     </div>
     </section>
+    
 {% endblock %}

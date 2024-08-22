@@ -16,10 +16,17 @@ class ReviewForm(forms.ModelForm):
         return rating
 
 
+from django import forms
+from .models import Feedback  # Adjust the import according to your project structure
+
+from django import forms
+from .models import Feedback  # Adjust the import according to your project structure
+
 class FeedbackForm(forms.ModelForm):
     class Meta:
         model = Feedback
         fields = ['message']
         widgets = {
-            'message': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Enter your feedback here...'}),
+            'message': forms.Textarea(attrs={'rows': 4, 'cols': 20, 'placeholder': 'Enter your feedback here...'}),
         }
+

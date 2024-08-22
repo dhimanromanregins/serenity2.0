@@ -62,6 +62,17 @@ class UserProfileForm(forms.ModelForm):
             'email','phone_number','first_name', 'last_name', 'date_of_birth',
             'address', 'bio', 'profile_picture'
         ]
+        
+        widgets = {
+        'email': forms.EmailInput(attrs={'class': 'form-control'}),
+        'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
+        'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+        'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+        'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+        'address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'cols': 40}),
+        'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 2, 'cols': 40}),
+        'profile_picture': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+    }
 
 # Password Reset Request Form
 class CustomPasswordResetForm(PasswordResetForm):

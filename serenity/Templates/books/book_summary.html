@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-between">
             <div class="col-xl-5 col-lg-5 col-md-12">
-                <div class="section-tittle  mb-40">
+                <div class="section-title  mb-40">
                 <h2>Book Summary</h2>
                 </div>
             </div>
@@ -28,7 +28,7 @@
                 <div style="text-align: center; font-size: 25px;">No summary</div>
             {% else %}
                 {% for book in books %}
-                    <div class="book-summary">
+                    <div class=" col-md-3  mr-1 book-summary">
                         <div class="book-title">{{book.title}}</div>
                         <div class="book-text">{{book.summary.text}}</div>
                     </div>

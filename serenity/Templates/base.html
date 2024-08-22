@@ -50,16 +50,36 @@
                         </div>
                       </form>
                     </div>
+                    <div class="col-5 justify-content-end ">
+                      <div class="parent-container d-flex flex-column">
+                          <div class="welcome-main d-flex">
+                             <div class="first">
+                                <svg class="welcome-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 43.48 46">
+                                   <defs>
+                                      <style>.welcome-1,.welcome-2{fill:none;stroke:#ee7523;stroke-linecap:round;stroke-width:3px;}.welcome-1{stroke-miterlimit:10;}.welcome-2{stroke-linejoin:round;}</style>
+                                   </defs>
+                                   <g id="Layer_2" data-name="Layer 2">
+                                      <g id="Layer_1-2" data-name="Layer 1">
+                                         <g id="Group_268" data-name="Group 268">
+                                            <path id="Path_54" data-name="Path 54" class="welcome-1" d="M20.61,22.5c-17.27,1.72-19,16-19,16-.51,3.79.78,6,3,6h21"></path>
+                                            <ellipse id="Ellipse_8" data-name="Ellipse 8" class="welcome-1" cx="20.61" cy="12" rx="10" ry="10.5"></ellipse>
+                                            <g id="Group_76" data-name="Group 76">
+                                               <line id="Line_17" data-name="Line 17" class="welcome-2" x1="41.98" y1="33.5" x2="25.61" y2="33.5"></line>
+                                            </g>
+                                            <path id="Path_55" data-name="Path 55" class="welcome-2" d="M34,24.5l8,9-8,8"></path>
+                                         </g>
+                                      </g>
+                                   </g>
+                                </svg>
+                             </div>
+                             <div class="second">
+                                <h6>welcome {% if request.user.is_authenticated %}{{request.user.username}}{% else %}Guest{% endif %}</h6>
+                             </div>
+                          </div>
+                       </div>
+                  </div>
                     <div class="header-info-right d-flex align-items-center">
                       <ul>
-                        <li>
-                          Welcome,
-                          {% if request.user.is_authenticated %}
-                          {{request.user.username}}
-                          {% else %}
-                          Guest
-                          {% endif %}
-                      </li>
                         <li>
                           {% if request.user.is_authenticated %}
                           <a href="/profile" class="btn header-btn">Profile</a>
@@ -84,14 +104,11 @@
           <div class="container">
             <div class="row justify-content-between">
               <div class="col-xl-3 col-lg-5 col-md-4 col-sm-6">
-                <div class="single-footer-caption mb-50">
-                  <div class="single-footer-caption mb-30">
+                <div class="single-footer-caption">
+                  <div class="single-footer-caption ">
                     <div class="footer-logo mb-25">
                       <a href="/"
-                        ><img
-                          src="{% static 'img/logo/logo2_footer.png' %}"
-                          alt=""
-                      /></a>
+                        >Serenity Shelf</a>
                     </div>
                     <div class="footer-tittle">
                       <div class="footer-pera">
@@ -114,7 +131,7 @@
                 </div>
               </div>
               <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5">
-                <div class="single-footer-caption mb-50">
+                <div class="single-footer-caption ">
                   <div class="footer-tittle">
                     <h4>Book Recommendations</h4>
                     <ul>
@@ -128,7 +145,7 @@
                 </div>
               </div>
               <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
-                <div class="single-footer-caption mb-50">
+                <div class="single-footer-caption ">
                   <div class="footer-tittle">
                     <h4>&nbsp;</h4>
                     <ul>
@@ -142,7 +159,7 @@
                 </div>
               </div>
               <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
-                <div class="single-footer-caption mb-50">
+                <div class="single-footer-caption ">
                   <div class="footer-tittle">
                     <h4>Site Map</h4>
                     <ul class="mb-20">

@@ -1,5 +1,5 @@
 .error {
-    color: red;
+    color: #002e6c;
 }
 
 div.single-input-fields a {
@@ -18,7 +18,7 @@ form#review-form p {
 
 form#review-form .rating i.y-rating {
     font-size: 20px;
-    color: #FF5700;
+    color: #002e6c;
 }
 
 form#review-form .rating i.no-rating {
@@ -28,7 +28,7 @@ form#review-form .rating i.no-rating {
 
 .review-item .rating i.y-rating {
     font-size: 20px;
-    color: #FF5700;
+    color: #002e6c;
 }
 
 .review-item .rating i.no-rating {
@@ -53,7 +53,7 @@ form#review-form .comment {
 }
 
 .all-book-rating .rating i.y-rating {
-    color: #FF5700!important;
+    color: #002e6c!important;
 }
 
 .all-book-rating .rating i.no-rating {
@@ -74,11 +74,11 @@ a.saved-read-book:hover {
 }
 
 .book-summary {
-    background: #ff1616;
+    background: #002e6c;
     color: white;
     padding: 20px 30px;
     border-radius: 35px;
-    margin: 10px 0
+    margin: 10px 10px;
 }
 
 .book-summary .book-title {
@@ -91,7 +91,41 @@ a.saved-read-book:hover {
 }
 
 .logo a {
-    color: red;
+    color: #002e6c;
     font-weight: bold;
     font-size: 30px;
+}
+
+.welcome-main h6{
+    color: var(--primary-color-1);
+  }
+  .welcome-icon {
+    position: relative;
+    right: .25rem;
+    width: 35px;
+  }
+  
+  .welcome-main a {
+    font-size: 12px;
+    margin-top: 0px;
+    text-decoration: none;
+    color: #002e6c;
+  }
+  .welcome-main {
+  margin:10px;
+  margin-left: auto; 
+  }
+  .parent-container {
+    display: flex;
+    flex-direction: column;
+  
+  }
+
+.properties-img img {
+    height: 200px; /* Adjust as needed */
+    object-fit: cover;
+    width: 100%;
+}
+.properties-caption.properties-caption2 {
+    height: 230px;
 }

@@ -19,9 +19,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
     <title>Serenity</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
+<style>
+    .slider-active {
+        width: 100%;
+    }
+    .single-slider {
+        height: 300px; /* Adjust height as needed */
+        background: #ddd; /* Example background */
+    }
+</style>
 </head>
+
 <header>
     <div class="header-area">
     <div class="main-header ">
@@ -42,16 +55,40 @@
         </div>
     </form>
     </div>
+
+
+    <div class="col-5 justify-content-end ">
+        <div class="parent-container d-flex flex-column">
+            <div class="welcome-main d-flex">
+               <div class="first">
+                  <svg class="welcome-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 43.48 46">
+                     <defs>
+                        <style>.welcome-1,.welcome-2{fill:none;stroke:#ee7523;stroke-linecap:round;stroke-width:3px;}.welcome-1{stroke-miterlimit:10;}.welcome-2{stroke-linejoin:round;}</style>
+                     </defs>
+                     <g id="Layer_2" data-name="Layer 2">
+                        <g id="Layer_1-2" data-name="Layer 1">
+                           <g id="Group_268" data-name="Group 268">
+                              <path id="Path_54" data-name="Path 54" class="welcome-1" d="M20.61,22.5c-17.27,1.72-19,16-19,16-.51,3.79.78,6,3,6h21"></path>
+                              <ellipse id="Ellipse_8" data-name="Ellipse 8" class="welcome-1" cx="20.61" cy="12" rx="10" ry="10.5"></ellipse>
+                              <g id="Group_76" data-name="Group 76">
+                                 <line id="Line_17" data-name="Line 17" class="welcome-2" x1="41.98" y1="33.5" x2="25.61" y2="33.5"></line>
+                              </g>
+                              <path id="Path_55" data-name="Path 55" class="welcome-2" d="M34,24.5l8,9-8,8"></path>
+                           </g>
+                        </g>
+                     </g>
+                  </svg>
+               </div>
+               <div class="second">
+                <h6>welcome {% if request.user.is_authenticated %}{{request.user.username}}{% else %}Guest{% endif %}</h6>
+     
+               </div>
+            </div>
+         </div>
+    </div>
+
     <div class="header-info-right d-flex align-items-center">
     <ul>
-        <li>
-            Welcome,
-            {% if request.user.is_authenticated %}
-            {{request.user.username}}
-            {% else %}
-            Guest
-            {% endif %}
-        </li>
     <li>
         {% if request.user.is_authenticated %}
             <a href="/profile" class=" btn header-btn">Profile</a>
@@ -115,61 +152,33 @@
     </div>
     </header>
     <main>
-    
-    <div class="slider-area">
-    <div class="container">
-    <div class="row">
-    <div class="col-xl-12">
-    <div class="slider-active dot-style slick-initialized slick-slider slick-dotted">
-    
-    <div class="slick-list draggable"><div class="slick-track" style="opacity: 1; width: 3348px;"><div class="single-slider slider-height slider-bg1 d-flex align-items-center slick-slide" data-slick-index="0" aria-hidden="true" tabindex="-1" role="tabpanel" id="slick-slide00" aria-describedby="slick-slide-control00" style="width: 1116px; position: relative; left: 0px; top: 0px; z-index: 998; opacity: 0; transition: opacity 500ms;">
-    <div class="container">
-    <div class=" sliderheight3 row justify-content-center">
-    <div class="col-xxl-4 col-xl-4 col-lg-5 col-md-6 col-sm-7">
-    <div class="hero-caption text-center">
-    <span data-animation="fadeInUp" data-delay=".2s" class="" style="animation-delay: 0.2s;">Science Fiction</span>
-    <h1 data-animation="fadeInUp" data-delay=".4s" class="" style="animation-delay: 0.4s;">The History<br> of Phipino</h1>
-    <a href="#" class="btn hero-btn" data-animation="bounceIn" data-delay=".8s" tabindex="-1" style="animation-delay: 0.8s;">Browse Store</a>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    <div class="single-slider slider-height slider-bg2 d-flex align-items-center slick-slide slick-current slick-active" data-slick-index="1" aria-hidden="false" tabindex="0" role="tabpanel" id="slick-slide01" aria-describedby="slick-slide-control01" style="width: 1116px; position: relative; left: -1116px; top: 0px; z-index: 999; opacity: 1;">
-    <div class="container">
-    <div class=" sliderheight3 row justify-content-center">
-    <div class="col-xxl-4 col-xl-4 col-lg-5 col-md-6 col-sm-7">
-    <div class="hero-caption text-center">
-    <span data-animation="fadeInUp" data-delay=".2s" class="" style="animation-delay: 0.2s;">Science Fiction</span>
-    <h1 data-animation="fadeInUp" data-delay=".4s" class="" style="animation-delay: 0.4s;">The History<br> of Phipino</h1>
-    <a href="#" class="btn hero-btn" data-animation="bounceIn" data-delay=".8s" tabindex="0" style="animation-delay: 0.8s;">Browse Store</a>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div><div class="single-slider slider-height slider-bg3 d-flex align-items-center slick-slide" data-slick-index="2" aria-hidden="true" tabindex="-1" role="tabpanel" id="slick-slide02" aria-describedby="slick-slide-control02" style="width: 1116px; position: relative; left: -2232px; top: 0px; z-index: 998; opacity: 0;">
-    <div class="container">
-    <div class=" sliderheight3 row justify-content-center">
-    <div class="col-xxl-4 col-xl-4 col-lg-5 col-md-6 col-sm-7">
-    <div class="hero-caption text-center">
-    <span data-animation="fadeInUp" data-delay=".2s">Science Fiction</span>
-    <h1 data-animation="fadeInUp" data-delay=".4s">The History<br> of Phipino</h1>
-    <a href="#" class="btn hero-btn" data-animation="bounceIn" data-delay=".8s" tabindex="-1">Browse Store</a>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div></div></div>
-    
-    <ul class="slick-dots" style="display: block;" role="tablist"><li class="" role="presentation"><button type="button" role="tab" id="slick-slide-control00" aria-controls="slick-slide00" aria-label="1 of 3" tabindex="-1">1</button></li><li role="presentation" class="slick-active"><button type="button" role="tab" id="slick-slide-control01" aria-controls="slick-slide01" aria-label="2 of 3" tabindex="0" aria-selected="true">2</button></li><li role="presentation"><button type="button" role="tab" id="slick-slide-control02" aria-controls="slick-slide02" aria-label="3 of 3" tabindex="-1">3</button></li></ul></div>
-    </div>
-    </div>
-    </div>
-    </div>
+ 
+    <section id="banner" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 back-one d-flex align-items-center justify-content-center">
+            <div class="main-wrap">
+            <h1 class="">Audiobooks<br>
+                &amp; More</h1>
+                <h6 class="h-divider "></h6>
+                <p>START A FREE TRIAL TO GET 3 AUDIOBOOKS
+                    FREE PLUS 30 DAYS OF ACCESS TO MEMBER-EXCLUSIVE PERKS AND DEALS</p>
+                    <a href="register.html" tabindex="0" class="btn btn__submit jumbotron-btn" title="Get 3 Audiobooks for free">
+                        Get 3 Audiobooks &amp; More for FREE                </a>
+            </div>
+                </div>
+                <div class="col-md-6">
+            <div class="main-second">
+            <img src="../media/book_images/audio.jpg">
+            </div>
+                </div>
+            </div>
+        </div>
 
+    </section>
     <section class="now-trending" class="py-5">
         <div class="container">
-            <h2 class="text-center mb-5 section-title">Read Books</h2>
+            <h2 class="text-center  section-title">Read Books</h2>
             <div id="readBooksSlider" class="slick-slider">
                 <!-- Book Cards -->
                 {% if not read_books %}
@@ -207,7 +216,7 @@
     </section>
     <section class="now-trending" class="py-5">
         <div class="container">
-            <h2 class="text-center mb-5 section-title">Saved Books</h2>
+            <h2 class="text-center section-title">Saved Books</h2>
             <div id="savedBooksSlider" class="slick-slider">
                 <!-- Book Cards -->
                 {% if not saved_books %}
@@ -248,8 +257,8 @@
         <div class="row justify-content-between">
         <div class="col-xl-5 col-lg-5 col-md-12">
         
-        <div class="section-tittle  mb-40">
-        <h2>Latest Published items</h2>
+        <div>
+        <h2 class="section-title  mb-40">Latest Published items</h2>
         </div>
         </div>
         <div class="col-xl-7 col-lg-7 col-md-12">
@@ -258,6 +267,7 @@
         <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
         <a class="nav-link {% if not selected_genre %}active{% endif %}" href="/">All</a>
+        
         {% for gen in genres %}
             <a class="nav-link{% if gen.id|stringformat:"s" == selected_genre %} active{% endif %}" href="/?genre={{gen.id}}">{{gen.name}}</a>
         {% endfor %}
@@ -269,15 +279,14 @@
         </div>
         </div>
         <div class="container">
-        
-        <div class="tab-content" id="nav-tabContent">
+         <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-one" role="tabpanel" aria-labelledby="nav-one-tab">
             <div class="row">
                 {% if not books %}
                     <div style="text-align: center; font-size: 25px;">No books</div>
                 {% endif %}
                 {% for book in books %}
-                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
                     <div class="properties pb-30">
                         <div class="properties-card">
                             <div class="properties-img">
@@ -322,8 +331,10 @@
         {% endif %}
         </div>
         </section>
-
-
+     
+        
+        
+        
     
     </main>
     <footer>
@@ -332,11 +343,14 @@
     <div class="container">
     <div class="row justify-content-between">
     <div class="col-xl-3 col-lg-5 col-md-4 col-sm-6">
-    <div class="single-footer-caption mb-50">
-    <div class="single-footer-caption mb-30">
+    <div class="single-footer-caption ">
+    <div class="single-footer-caption ">
     
     <div class="footer-logo mb-25">
-    <a href="/"><img src="{% static 'img/logo/logo2_footer.png' %}" alt=""></a>
+    <a href="/"><h3 class="section-title">
+        Serenity Shelf
+    </h3>
+      </a>
     </div>
     <div class="footer-tittle">
     <div class="footer-pera">
@@ -354,7 +368,7 @@
     </div>
     </div>
     <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5">
-    <div class="single-footer-caption mb-50">
+    <div class="single-footer-caption ">
     <div class="footer-tittle">
     <h4>Book Category</h4>
     <ul>
@@ -368,7 +382,7 @@
     </div>
     </div>
     <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
-    <div class="single-footer-caption mb-50">
+    <div class="single-footer-caption ">
     <div class="footer-tittle">
     <h4>&nbsp;</h4>
     <ul>
@@ -382,7 +396,7 @@
     </div>
     </div>
     <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
-    <div class="single-footer-caption mb-50">
+    <div class="single-footer-caption">
     <div class="footer-tittle">
     <h4>Site Map</h4>
     <ul class="mb-20">
@@ -475,5 +489,28 @@
             });
         });
     </script>
+
+    <!--  -->
+
+    
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('.slider-active').slick({
+            dots: true, // Show dots
+            infinite: true, // Infinite loop
+            speed: 500, // Animation speed
+            slidesToShow: 1, // Number of slides to show
+            slidesToScroll: 1, // Number of slides to scroll
+            arrows: true, // Show navigation arrows
+        });
+    });
+</script>
+
+    
+<!--  -->
 </body>
     </html>
