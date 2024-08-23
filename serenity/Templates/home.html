@@ -37,120 +37,78 @@
 
 <header>
     <div class="header-area">
-    <div class="main-header ">
-    <div class="header-top ">
-    <div class="container">
-    <div class="row">
-    <div class="col-xl-12">
-    <div class="d-flex justify-content-between align-items-center flex-sm">
-    <div class="header-info-left d-flex align-items-center">
-    
-    <div class="logo">
-    <a href="/">Serenity Shelf</a>
-    </div>
-    <form action="/search" class="form-box">
-        <input type="text" name="q" value="{{ search_query }}" placeholder="Search book by author or publisher">
-        <div class="search-icon">
-            <i class="ti-search"></i>
-        </div>
-    </form>
-    </div>
-
-
-    <div class="col-5 justify-content-end ">
-        <div class="parent-container d-flex flex-column">
-            <div class="welcome-main d-flex" style="align-items: center;>
-               <div class="first">
-                  <svg class="welcome-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 43.48 46">
-                     <defs>
-                        <style>.welcome-1,.welcome-2{fill:none;stroke:#ee7523;stroke-linecap:round;stroke-width:3px;}.welcome-1{stroke-miterlimit:10;}.welcome-2{stroke-linejoin:round;}</style>
-                     </defs>
-                     <g id="Layer_2" data-name="Layer 2">
-                        <g id="Layer_1-2" data-name="Layer 1">
-                           <g id="Group_268" data-name="Group 268">
-                              <path id="Path_54" data-name="Path 54" class="welcome-1" d="M20.61,22.5c-17.27,1.72-19,16-19,16-.51,3.79.78,6,3,6h21"></path>
-                              <ellipse id="Ellipse_8" data-name="Ellipse 8" class="welcome-1" cx="20.61" cy="12" rx="10" ry="10.5"></ellipse>
-                              <g id="Group_76" data-name="Group 76">
-                                 <line id="Line_17" data-name="Line 17" class="welcome-2" x1="41.98" y1="33.5" x2="25.61" y2="33.5"></line>
-                              </g>
-                              <path id="Path_55" data-name="Path 55" class="welcome-2" d="M34,24.5l8,9-8,8"></path>
-                           </g>
-                        </g>
-                     </g>
-                  </svg>
-               </div>
-               <div class="second" style="padding-top: 10px;">
-                <h6>welcome {% if request.user.is_authenticated %}{{request.user.username}}{% else %}Guest{% endif %}</h6>
-     
-               </div>
+      <div class="main-header">
+        <div class="header-top">
+          <div class="container">
+            <div class="row">
+              <div class="col-xl-12">
+                <div
+                  class="d-flex justify-content-between align-items-center flex-sm"
+                >
+                  <div class="header-info-left d-flex align-items-center">
+                    <div class="logo">
+                      <a href="/"
+                        >Serenity Shelf</a>
+                    </div>
+                    <form action="/search" class="form-box">
+                      <input
+                        type="text"
+                        name="q"
+                        value="{{ search_query }}"
+                        placeholder="Search book"
+                      />
+                      <div class="search-icon">
+                        <i class="ti-search"></i>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="col-5 justify-content-end ">
+                    <div class="parent-container d-flex flex-column">
+                        <div class="welcome-main d-flex" style="align-items: center;">
+                           <div class="first">
+                              <svg class="welcome-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 43.48 46">
+                                 <defs>
+                                    <style>.welcome-1,.welcome-2{fill:none;stroke:#ee7523;stroke-linecap:round;stroke-width:3px;}.welcome-1{stroke-miterlimit:10;}.welcome-2{stroke-linejoin:round;}</style>
+                                 </defs>
+                                 <g id="Layer_2" data-name="Layer 2">
+                                    <g id="Layer_1-2" data-name="Layer 1">
+                                       <g id="Group_268" data-name="Group 268">
+                                          <path id="Path_54" data-name="Path 54" class="welcome-1" d="M20.61,22.5c-17.27,1.72-19,16-19,16-.51,3.79.78,6,3,6h21"></path>
+                                          <ellipse id="Ellipse_8" data-name="Ellipse 8" class="welcome-1" cx="20.61" cy="12" rx="10" ry="10.5"></ellipse>
+                                          <g id="Group_76" data-name="Group 76">
+                                             <line id="Line_17" data-name="Line 17" class="welcome-2" x1="41.98" y1="33.5" x2="25.61" y2="33.5"></line>
+                                          </g>
+                                          <path id="Path_55" data-name="Path 55" class="welcome-2" d="M34,24.5l8,9-8,8"></path>
+                                       </g>
+                                    </g>
+                                 </g>
+                              </svg>
+                           </div>
+                           <div class="second" style="padding-top: 10px;">
+                              <h6>welcome {% if request.user.is_authenticated %}{{request.user.username}}{% else %}Guest{% endif %}</h6>
+                           </div>
+                        </div>
+                     </div>
+                </div>
+                  <div class="header-info-right d-flex align-items-center">
+                    <ul>
+                      <li>
+                        {% if request.user.is_authenticated %}
+                        <a href="/profile" class="btn header-btn">Profile</a>
+                        {% else %}
+                        <a href="/login" class="btn header-btn">Sign in</a>
+                        {% endif %}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
-         </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <div class="header-info-right d-flex align-items-center">
-    <ul>
-    <li>
-        {% if request.user.is_authenticated %}
-            <a href="/profile" class=" btn header-btn">Profile</a>
-        {% else %}
-            <a href="/login" class="btn header-btn">Sign in</a>
-        {% endif %}
-    </li>
-    </ul>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    <div class="header-bottom  header-sticky">
-    <div class="container">
-    <div class="row align-items-center">
-    <div class="col-xl-12">
-    
-    <div class="logo2">
-    <a href="/">Serenity Shelf</a>
-    </div>
-    
-    <div class="main-menu text-center d-none d-lg-block">
-    <nav>
-    <ul id="navigation">
-    <li><a href="/">Home</a></li>
-
-    <li><a href="/recomendations">Recommendations</a></li>
-    <li><a href="/feedback">Feedback</a></li>
-    <li><a href="/book-summary">Summary</a></li>
-    <li><a href="/book-read">Book Read</a></li>
-    <li><a href="/audiobooks">Audio Book</a></li>
-    <li><a href="/download-books">Book Download</a></li>
-   <li><a href="/contact">Contact</a></li>
-    </ul>
-    </nav>
-    </div>
-    </div>
-    
-    <div class="col-xl-12">
-    <div class="mobile_menu d-block d-lg-none"><div class="slicknav_menu"><a href="#" aria-haspopup="true" role="button" tabindex="0" class="slicknav_btn slicknav_collapsed"><span class="slicknav_menutxt">MENU</span><span class="slicknav_icon"><span class="slicknav_icon-bar"></span><span class="slicknav_icon-bar"></span><span class="slicknav_icon-bar"></span></span></a><ul class="slicknav_nav slicknav_hidden" aria-hidden="true" role="menu" style="display: none;">
-    <li><a href="/" role="menuitem" tabindex="-1">Home</a></li>
-    <li><a href="category" role="menuitem" tabindex="-1">Recommendations</a></li>
-    <li><a href="category" role="menuitem" tabindex="-1">Feedback</a></li>
-    <li><a href="category" role="menuitem" tabindex="-1">Summary</a></li>
-    <li><a href="category" role="menuitem" tabindex="-1">Book Read</a></li>
-    <li><a href="about.html" role="menuitem" tabindex="-1">About</a></li>
-    <li class="slicknav_collapsed slicknav_parent"><a href="#" role="menuitem" aria-haspopup="true" tabindex="-1" class="slicknav_item slicknav_row"><a href="#" tabindex="-1">Pages</a>
-    <span class="slicknav_arrow">+</span></a><ul class="submenu slicknav_hidden" role="menu" aria-hidden="true" style="display: none;">
-    <li><a href="/login" role="menuitem" tabindex="-1">login</a></li>
-    </ul>
-    </li>
-    <li><a href="/contact" role="menuitem" tabindex="-1">Contact</a></li>
-    </ul></div></div>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    </header>
+  </header>
     <main>
  
     <section id="banner" class="py-5">
