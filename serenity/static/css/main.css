@@ -129,3 +129,12 @@ a.saved-read-book:hover {
 .properties-caption.properties-caption2 {
     height: 230px;
 }
+
+ul.errorlist {
+    color: red;
+    font-size: 13px;
+}
+
+div.alert-success {
+    color: green;
+}

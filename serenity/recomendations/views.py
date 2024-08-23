@@ -44,7 +44,7 @@ def recomended_books(request):
 
     if queries:
         books = books.filter(query_filters)
-
+    print('books>>>', books)
     books_by_genre = {}
     if books.exists():
         for book in books:

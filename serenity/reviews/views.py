@@ -1,8 +1,9 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from .models import Review
-from .forms import ReviewForm, FeedbackForm
+from .forms import ReviewForm, FeedbackForm, ContactForm
 from books.models import Book
+from django.contrib import messages
 
 @login_required
 def submit_review(request, book_id):
@@ -56,3 +57,14 @@ def submit_feedback(request):
 
 def feedback_thanks(request):
     return render(request, 'reviews/feedback_thanks.html')
+
+def contactUs(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your message has been sent successfully!')
+            return redirect('contact')
+    else:
+        form = ContactForm()
+    return render(request, 'contact.html', {'form': form})

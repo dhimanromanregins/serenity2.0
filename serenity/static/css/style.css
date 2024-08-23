@@ -310,8 +310,8 @@ hr {
   border-color: #eee1e0;
 }
 .section-padding {
-  padding-top: 120px;
-  padding-bottom: 120px;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .section-padding {
@@ -1410,8 +1410,8 @@ a.btn.header-btn ,a.btn.hero-btn {
   transition: all 0.4s ease-out 0s;
 }
 .best-selling {
-  padding-top: 95px;
-  padding-bottom: 50px;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .best-selling {

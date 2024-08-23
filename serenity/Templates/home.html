@@ -59,7 +59,7 @@
 
     <div class="col-5 justify-content-end ">
         <div class="parent-container d-flex flex-column">
-            <div class="welcome-main d-flex">
+            <div class="welcome-main d-flex" style="align-items: center;>
                <div class="first">
                   <svg class="welcome-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 43.48 46">
                      <defs>
@@ -79,7 +79,7 @@
                      </g>
                   </svg>
                </div>
-               <div class="second">
+               <div class="second" style="padding-top: 10px;">
                 <h6>welcome {% if request.user.is_authenticated %}{{request.user.username}}{% else %}Guest{% endif %}</h6>
      
                </div>
@@ -176,14 +176,12 @@
         </div>
 
     </section>
+    {% if read_books %}
     <section class="now-trending" class="py-5">
         <div class="container">
             <h2 class="text-center  section-title">Read Books</h2>
             <div id="readBooksSlider" class="slick-slider">
                 <!-- Book Cards -->
-                {% if not read_books %}
-                <div style="text-align: center; font-size: 25px;">No books</div>
-                {% endif %}
                 {% for book in read_books %}
                     <div class="book-card" style="margin-right: 20px;"> <!-- Adjust margin as needed -->
                         <div class="card">
@@ -214,14 +212,13 @@
             </div>
         </div>
     </section>
+    {% endif %}
+    {% if saved_books %}
     <section class="now-trending" class="py-5">
         <div class="container">
             <h2 class="text-center section-title">Saved Books</h2>
             <div id="savedBooksSlider" class="slick-slider">
                 <!-- Book Cards -->
-                {% if not saved_books %}
-                <div style="text-align: center; font-size: 25px;">No books</div>
-                {% endif %}
                 {% for book in saved_books %}
                     <div class="book-card" style="margin-right: 20px;"> <!-- Adjust margin as needed -->
                         <div class="card">
@@ -252,13 +249,15 @@
             </div>
         </div>
     </section>
+    {% endif %}
+    {% if books %}
     <section class="our-client section-padding best-selling">
         <div class="container">
         <div class="row justify-content-between">
         <div class="col-xl-5 col-lg-5 col-md-12">
         
         <div>
-        <h2 class="section-title  mb-40">Latest Published items</h2>
+        <h2 class="section-title  mb-40">Latest Published Books</h2>
         </div>
         </div>
         <div class="col-xl-7 col-lg-7 col-md-12">
@@ -330,12 +329,8 @@
             </div>
         {% endif %}
         </div>
-        </section>
-     
-        
-        
-        
-    
+    </section>
+    {% endif %}
     </main>
     <footer>
     <div class="footer-wrappper section-bg">
@@ -400,9 +395,8 @@
     <div class="footer-tittle">
     <h4>Site Map</h4>
     <ul class="mb-20">
-    <li><a href="#">Home</a></li>
-    <li><a href="#">About Us</a></li>
-    <li><a href="#">Contact</a></li>
+    <li><a href="/">Home</a></li>
+    <li><a href="contact/">Contact</a></li>
     </ul>
     </div>
     </div>
