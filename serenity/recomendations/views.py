@@ -4,6 +4,7 @@ from .models import  UserGenre, UserIntrests
 from .forms import UserGenreForm
 from books.models import Genre, Book
 from django.db.models import Q
+from haystack.query import SearchQuerySet, SQ
 
 
 
@@ -43,8 +44,12 @@ def recomended_books(request):
         query_filters |= Q(title__icontains=query) | Q(isbn__icontains=query) | Q(author__name__icontains=query) | Q(author__bio__icontains=query) | Q(summary__text__icontains=query)
 
     if queries:
-        books = books.filter(query_filters)
-    print('books>>>', books)
+        sqs = SearchQuerySet().models(Book).all()
+        sqs = sqs.filter(SQ(title__icontains=query) | SQ(isbn__icontains=query) | SQ(author__icontains=query) | SQ(genre__icontains=query) | SQ(summary__icontains=query) | SQ(bio__icontains=query))
+        ids = []
+        for sq in sqs:
+            ids.append(sq.pk)
+        books = books.filter(id__in=ids)
     books_by_genre = {}
     if books.exists():
         for book in books:

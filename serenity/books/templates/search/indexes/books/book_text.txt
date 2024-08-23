@@ -1,6 +1,2 @@
 {{ object.title }}
-{{ object.author.name }}
-{{ object.author.bio }}
-{{ object.genre.name }}
-{{ object.summary.text }}
 {{ object.isbn }}

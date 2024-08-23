@@ -9,6 +9,8 @@ from .utils import synthesize_and_play_speech
 from django.conf import settings
 from recomendations.models import UserIntrests
 import re
+from haystack.query import SearchQuerySet, SQ
+
 
 class BookListView(ListView):
     model = Book
@@ -132,14 +134,19 @@ def patch_book(request, pk):
 
 
 def search_books(request):
-    query = request.GET.get('q')
+    query = request.GET.get('q', '')
     genre_id = request.GET.get('genre', '')
 
     books = Book.objects.all()
 
     if query:
         UserIntrests.objects.create(user=request.user, text=query)
-        books = books.filter(Q(title__icontains=query) | Q(isbn__icontains=query) | Q(author__name__icontains=query) | Q(author__bio__icontains=query) | Q(summary__text__icontains=query))
+        sqs = SearchQuerySet().models(Book).all()
+        sqs = sqs.filter(SQ(title__icontains=query) | SQ(isbn__icontains=query) | SQ(author__icontains=query) | SQ(genre__icontains=query) | SQ(summary__icontains=query) | SQ(bio__icontains=query))
+        ids = []
+        for sq in sqs:
+            ids.append(sq.pk)
+        books = books.filter(id__in=ids)
     if genre_id:
         try:
             genre = Genre.objects.get(id=genre_id)

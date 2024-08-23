@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from .forms import UserRegistrationForm
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
@@ -72,6 +72,9 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, 'authentication/login.html', {'form': form})
 
+def logouT(request):
+    logout(request)
+    return redirect('login')
 
 def activate(request, uidb64, token):
     User = get_user_model()

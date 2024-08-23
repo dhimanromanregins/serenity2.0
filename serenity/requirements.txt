@@ -1,4 +1,6 @@
-Django==4.2.15
+Django==3.2.13
+django-haystack==3.2.1
+elasticsearch==7.13.1
 gTTS==2.5.3
 pillow==10.3.0
 pygame==2.6.0
