@@ -1,0 +1,4 @@
+Django==4.2.15
+gTTS==2.5.3
+pillow==10.3.0
+pygame==2.6.0

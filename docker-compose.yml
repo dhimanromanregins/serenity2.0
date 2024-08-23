@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    image: serenity_proj
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./serenity:/home/projects/serenity
+    ports:
+      - "8000:8000"
