@@ -176,14 +176,11 @@
         </div>
 
     </section>
+    {% if read_books %}
     <section class="now-trending" class="py-5">
         <div class="container">
             <h2 class="text-center  section-title">Read Books</h2>
             <div id="readBooksSlider" class="slick-slider">
-                <!-- Book Cards -->
-                {% if not read_books %}
-                <div style="text-align: center; font-size: 25px;">No books</div>
-                {% endif %}
                 {% for book in read_books %}
                     <div class="book-card" style="margin-right: 20px;"> <!-- Adjust margin as needed -->
                         <div class="card">
@@ -214,14 +211,12 @@
             </div>
         </div>
     </section>
+    {% endif %}
+    {% if saved_books %}
     <section class="now-trending" class="py-5">
         <div class="container">
             <h2 class="text-center section-title">Saved Books</h2>
             <div id="savedBooksSlider" class="slick-slider">
-                <!-- Book Cards -->
-                {% if not saved_books %}
-                <div style="text-align: center; font-size: 25px;">No books</div>
-                {% endif %}
                 {% for book in saved_books %}
                     <div class="book-card" style="margin-right: 20px;"> <!-- Adjust margin as needed -->
                         <div class="card">
@@ -252,6 +247,8 @@
             </div>
         </div>
     </section>
+    {% endif %}
+    {% if books %}
     <section class="our-client section-padding best-selling">
         <div class="container">
         <div class="row justify-content-between">
@@ -282,9 +279,6 @@
          <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-one" role="tabpanel" aria-labelledby="nav-one-tab">
             <div class="row">
-                {% if not books %}
-                    <div style="text-align: center; font-size: 25px;">No books</div>
-                {% endif %}
                 {% for book in books %}
                 <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
                     <div class="properties pb-30">
@@ -330,11 +324,8 @@
             </div>
         {% endif %}
         </div>
-        </section>
-     
-        
-        
-        
+    </section>
+    {% endif %}
     
     </main>
     <footer>
