@@ -57,10 +57,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'serenity.wsgi.application'
 
+# DATABASES = {
+#      'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#      }
+#  }
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'books_db',
+        'USER': 'serenity',
+        'PASSWORD': 'serenity@123',
+        'HOST': '192.168.1.31',
+        'PORT': '5432',
     }
 }
 

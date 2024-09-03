@@ -174,13 +174,13 @@ def generate_audio(request, pk):
     return redirect('book_detail', pk=pk)
 
 
-@login_required
+@login_required(login_url='/login')
 def save_book(request, pk):
     book = get_object_or_404(Book, id=pk)
     SaveBook.objects.get_or_create(user=request.user, book=book)
     return redirect('book_detail', pk=book.id)  # Use pk here
 
-@login_required
+@login_required(login_url='/login')
 def unsave_book(request, pk):
     book = get_object_or_404(Book, id=pk)
     saved_book = SaveBook.objects.filter(user=request.user, book=book)
@@ -188,7 +188,7 @@ def unsave_book(request, pk):
         saved_book.delete()
     return redirect('book_detail', pk=pk)
 
-@login_required
+@login_required(login_url='/login')
 def book_read(request):
     selected_genre = request.GET.get('genre', '')
     books = RecentlyViewed.objects.filter(user=request.user)
@@ -197,7 +197,7 @@ def book_read(request):
     genres = Genre.objects.all()
     return render(request, 'books/book_read.html', {'books': books, 'genres': genres, 'selected_genre': selected_genre})
 
-@login_required
+@login_required(login_url='/login')
 def book_summary(request):
     selected_genre = request.GET.get('genre', '')
     books = Book.objects.all()

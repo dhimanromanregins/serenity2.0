@@ -1,62 +1,42 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import  UserGenre, UserIntrests
 from .forms import UserGenreForm
 from books.models import Genre, Book
-from django.db.models import Q
-from haystack.query import SearchQuerySet, SQ
+from .utils import get_book_recommendations
 
 
-
-@login_required
+@login_required(login_url='/login')
 def select_genres(request):
     if request.method == 'POST':
-        form = UserGenreForm(request.POST)
+        form = UserGenreForm(request.POST, user=request.user)
         if form.is_valid():
             UserGenre.objects.filter(user=request.user).delete()
             for genre in form.cleaned_data['genres']:
                 UserGenre.objects.create(user=request.user, name=genre.name)
             return redirect('genre_success')
+        else:
+            return redirect('/profile')
     else:
-        form = UserGenreForm()
-
-    return render(request, 'recomendations/gener_select.html', {'form': form})
-
+        return HttpResponse('Invalid request!')
 
 def genre_success(request):
     return render(request, 'recomendations/genre_success.html')
-
-
-
 
 @login_required
 def recomended_books(request):
     user = request.user
     user_interests = UserIntrests.objects.filter(user=user)
     user_genres = UserGenre.objects.filter(user=user)
-    books = Book.objects.none()
-    if user_genres.exists():
-        genre_names = [user_genre.name for user_genre in user_genres]
-        books = Book.objects.filter(genre__name__in=genre_names)
-    queries = [interest.text for interest in user_interests]
-    query_filters = Q()
-    for query in queries:
-        query_filters |= Q(title__icontains=query) | Q(isbn__icontains=query) | Q(author__name__icontains=query) | Q(author__bio__icontains=query) | Q(summary__text__icontains=query)
 
-    if queries:
-        sqs = SearchQuerySet().models(Book).all()
-        sqs = sqs.filter(SQ(title__icontains=query) | SQ(isbn__icontains=query) | SQ(author__icontains=query) | SQ(genre__icontains=query) | SQ(summary__icontains=query) | SQ(bio__icontains=query))
-        ids = []
-        for sq in sqs:
-            ids.append(sq.pk)
-        books = books.filter(id__in=ids)
+    recommendations = get_book_recommendations(user_interests, user_genres)
+
     books_by_genre = {}
-    if books.exists():
-        for book in books:
-            genre = book.genre.name
-            if genre not in books_by_genre:
-                books_by_genre[genre] = []
-            books_by_genre[genre].append(book)
+    for genre, book_titles in recommendations.items():
+        books = Book.objects.filter(genre__name=genre)
+        if books.exists():
+            books_by_genre[genre] = list(books)
+        
     genres = Genre.objects.all()
 
     return render(request, 'recomendations/recomended_books.html', {

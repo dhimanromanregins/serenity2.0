@@ -4,7 +4,7 @@ from .models import Audiobook, Download
 from .forms import AudiobookForm, AudiobookCreateForm
 from books.models import Book, Genre
 
-@login_required
+@login_required(login_url='/login')
 def download_audiobook(request, audiobook_id):
     audiobook = get_object_or_404(Audiobook, id=audiobook_id)
     # Track download in the database
@@ -13,7 +13,7 @@ def download_audiobook(request, audiobook_id):
     # Redirect to the audio file URL
     return redirect(audiobook.audio_file.url)
 
-@login_required
+@login_required(login_url='/login')
 def edit_audiobook(request, audiobook_id):
     audiobook = get_object_or_404(Audiobook, id=audiobook_id)
     if not request.user.is_superuser:
@@ -28,7 +28,7 @@ def edit_audiobook(request, audiobook_id):
         form = AudiobookForm(instance=audiobook)
     return render(request, 'audiobooks/edit_audiobook.html', {'form': form, 'audiobook': audiobook})
 
-@login_required
+@login_required(login_url='/login')
 def delete_audiobook(request, audiobook_id):
     audiobook = get_object_or_404(Audiobook, id=audiobook_id)
     if not request.user.is_superuser:
@@ -40,8 +40,7 @@ def delete_audiobook(request, audiobook_id):
 
     return render(request, 'audiobooks/delete_audiobook.html', {'audiobook': audiobook})
 
-
-@login_required
+@login_required(login_url='/login')
 def create_audiobook(request):
     if not request.user.is_superuser:
         return redirect('book_list')  # Only allow admins to create new audiobooks
@@ -56,7 +55,7 @@ def create_audiobook(request):
 
     return render(request, 'audiobooks/create_audiobook.html', {'form': form})
 
-@login_required
+@login_required(login_url='/login')
 def audiobook(request):
     selected_genre = request.GET.get('genre', '')
     books = list(Book.objects.all().values_list('id', flat=True))
@@ -73,7 +72,7 @@ def audiobook(request):
     genres = Genre.objects.all()
     return render(request, 'audiobooks/audiobooks.html', {'books': filtered_audiobooks, 'selected_genre': selected_genre, 'genres': genres})
 
-@login_required
+@login_required(login_url='/login')
 def download_books(request):
     selected_genre = request.GET.get('genre', '')
     books = list(Book.objects.all().values_list('id', flat=True))

@@ -80,7 +80,6 @@
             <div class="error">{{ form.bio.errors }}</div>
           {% endif %}
         </div>
-    
       </div>
 
       <div class="login-footer">
@@ -89,6 +88,23 @@
       </div>
     </div>
   </form>
+  <div class="select-genre" style="padding: 40px;">
+    <h2 style="text-align: center;">Select Your Preferred Genres</h2>
+    <form method="post" action="/select-genres/">
+      {% csrf_token %}
+      {{ genre_form.as_p }}
+      <button type="submit">Save Preferences</button>
+    </form>
+  </div>
   </div>
 </main>
+<script>
+  const formP = document.querySelector('.select-genre p');
+  formP.style.paddingLeft = '46px';
+  const formUL = document.querySelector('.select-genre ul');
+  formUL.style.paddingLeft = '46px';
+  const formButton = document.querySelector('.select-genre button');
+  formButton.classList.add('submit-btn3');
+  formButton.style.marginLeft = '46px';
+</script>
 {% endblock body %}

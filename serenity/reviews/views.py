@@ -5,7 +5,7 @@ from .forms import ReviewForm, FeedbackForm, ContactForm
 from books.models import Book
 from django.contrib import messages
 
-@login_required
+@login_required(login_url='/login')
 def submit_review(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     if request.method == 'POST':
@@ -21,7 +21,7 @@ def submit_review(request, book_id):
         form = ReviewForm()
     return render(request, 'reviews/submit_review.html', {'form': form, 'book': book})
 
-@login_required
+@login_required(login_url='/login')
 def moderate_review(request, review_id):
     review = get_object_or_404(Review, id=review_id)
     if not request.user.is_superuser:

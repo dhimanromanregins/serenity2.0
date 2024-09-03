@@ -25,6 +25,8 @@ from .forms import UserProfileForm
 from .models import CustomUser
 from django.urls import reverse_lazy
 from .decorators import redirect_if_authenticated
+from recomendations.forms import UserGenreForm
+from recomendations.models import UserGenre
 
 
 @redirect_if_authenticated
@@ -94,23 +96,29 @@ def activate(request, uidb64, token):
 
 
 
-@login_required
+@login_required(login_url='/login')
 def profile_view(request):
-    user = request.user  # Get the currently logged-in user
+    user = request.user
+    genre_form = UserGenreForm(user=user)
 
     if request.method == 'POST':
         form = UserProfileForm(request.POST, request.FILES, instance=user)
+        # genre_form = UserGenreForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Your profile has been updated successfully!')
+            # UserGenre.objects.filter(user=user).delete()
+            # for genre in genre_form.cleaned_data['genres']:
+                # UserGenre.objects.create(user=user, name=genre.name)
+            messages.success(request, 'Your profile and genres have been updated successfully!')
             return redirect('profile')
         else:
-            messages.error(request, 'Please correct the error below.')
+            messages.error(request, 'Please correct the errors below.')
     else:
         form = UserProfileForm(instance=user)
 
     context = {
-        'form': form
+        'form': form,
+        'genre_form': genre_form,
     }
 
     return render(request, 'authentication/profile.html', context)

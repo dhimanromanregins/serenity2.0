@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .models import ReadingHistory
 from books.models import Book
 
-@login_required
+@login_required(login_url='/login')
 def dashboard(request):
     user = request.user
     saved_books = user.saved_books.all()
